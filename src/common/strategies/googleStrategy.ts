@@ -19,7 +19,12 @@ const googleLogin = new GoogleStrategy(
       });
 
       if (oldUser) {
-        return done(null, oldUser);
+        return done(null, {
+          id: oldUser.id,
+          email: oldUser.email,
+          name: oldUser.name,
+          image: oldUser.image,
+        });
       }
     } catch (err) {
       console.log(err);
@@ -33,7 +38,12 @@ const googleLogin = new GoogleStrategy(
           image: profile.picture,
         },
       });
-      done(null, newUser);
+      done(null, {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+        image: newUser.image,
+      });
     } catch (err) {
       console.log(err);
     }

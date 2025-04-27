@@ -9,12 +9,15 @@ declare global {
     interface User {
       id: string;
       email: string;
+      name: string;
+      image?: string;
     }
   }
 }
 
 export const authGoogleRouter = Router();
 
+// Change from POST to GET for initiating OAuth flow via browser navigation
 authGoogleRouter.get(
   "/",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -27,11 +30,8 @@ authGoogleRouter.get(
     session: false,
   }),
   (req, res) => {
-    const id = req.user?.id;
-    const email = req.user?.email;
-
-    if (id && email) {
-      const token = generateJwt(id, email);
+    if (req.user) {
+      const token = generateJwt(req.user);
       res.cookie("x-auth-token", token);
       res.redirect(env.CLIENT_URL);
     } else {
