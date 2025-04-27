@@ -1,0 +1,4 @@
+ignoredBuiltDependencies:
+  - '@biomejs/biome'
+  - '@scarf/scarf'
+  - esbuild
