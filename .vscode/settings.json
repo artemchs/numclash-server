@@ -6,9 +6,9 @@
 		"source.organizeImports.biome": "explicit"
 	},
 	"[javascript][typescript][json][jsonc]": {
-		"editor.defaultFormatter": "biomejs.biome"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"[github-actions-workflow][markdown][xml][yaml]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
-	}
+	},
 }
