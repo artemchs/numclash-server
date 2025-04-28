@@ -2,16 +2,9 @@ import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import { env } from "../utils/envConfig";
 import passport from "passport";
 import { prismaClient } from "../lib/prismaClient";
-import { Request } from "express"; // Import Request type
+import { cookieExtractor } from "../utils/cookieExtractor";
 
 // Custom extractor function to get the token from cookies
-const cookieExtractor = (req: Request): string | null => {
-  let token = null;
-  if (req && req.cookies) {
-    token = req.cookies["x-auth-token"];
-  }
-  return token;
-};
 
 const jwtLogin = new JwtStrategy(
   {

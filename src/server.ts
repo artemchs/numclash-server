@@ -10,9 +10,11 @@ import { env } from "@/common/utils/envConfig";
 // Import strategies to register them with Passport
 import "@/common/strategies/googleStrategy";
 import "@/common/strategies/jwtStrategy";
-import { pingRouter } from "./api/ping/pingRouter";
+import { pingRouter } from "@/api/ping/pingRouter";
+import { usersRouter } from "@/api/users/usersRouter";
+import { gamesRouter } from "@/api/games/gamesRouter"; // Import the new games router
 import { authRouter } from "./api/auth/authRouter";
-import { usersRouter } from "./api/users/usersRouter";
+import { invitesRouter } from "./api/invites/invitesRouter";
 
 const logger = pino({ name: "server start" });
 const app: Express = express();
@@ -35,6 +37,8 @@ app.use(requestLogger);
 app.use("/ping", pingRouter);
 app.use("/auth", authRouter);
 app.use("/users", usersRouter);
+app.use("/games", gamesRouter);
+app.use("/invites", invitesRouter);
 
 // Error handlers
 app.use(errorHandler());

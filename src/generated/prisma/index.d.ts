@@ -24,6 +24,11 @@ export type User = $Result.DefaultSelection<Prisma.$UserPayload>
  */
 export type Game = $Result.DefaultSelection<Prisma.$GamePayload>
 /**
+ * Model Invite
+ * 
+ */
+export type Invite = $Result.DefaultSelection<Prisma.$InvitePayload>
+/**
  * Model MathQuestion
  * 
  */
@@ -45,10 +50,18 @@ export type GameStatus = (typeof GameStatus)[keyof typeof GameStatus]
 
 
 export const MathQuestionType: {
-  ARITHMETIC: 'ARITHMETIC'
+  ARITHMETICS: 'ARITHMETICS'
 };
 
 export type MathQuestionType = (typeof MathQuestionType)[keyof typeof MathQuestionType]
+
+
+export const MathQuestionStatus: {
+  NOT_ANSWERED: 'NOT_ANSWERED',
+  ANSWERED: 'ANSWERED'
+};
+
+export type MathQuestionStatus = (typeof MathQuestionStatus)[keyof typeof MathQuestionStatus]
 
 }
 
@@ -59,6 +72,10 @@ export const GameStatus: typeof $Enums.GameStatus
 export type MathQuestionType = $Enums.MathQuestionType
 
 export const MathQuestionType: typeof $Enums.MathQuestionType
+
+export type MathQuestionStatus = $Enums.MathQuestionStatus
+
+export const MathQuestionStatus: typeof $Enums.MathQuestionStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -204,6 +221,16 @@ export class PrismaClient<
     * ```
     */
   get game(): Prisma.GameDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.invite`: Exposes CRUD operations for the **Invite** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Invites
+    * const invites = await prisma.invite.findMany()
+    * ```
+    */
+  get invite(): Prisma.InviteDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.mathQuestion`: Exposes CRUD operations for the **MathQuestion** model.
@@ -656,6 +683,7 @@ export namespace Prisma {
   export const ModelName: {
     User: 'User',
     Game: 'Game',
+    Invite: 'Invite',
     MathQuestion: 'MathQuestion'
   };
 
@@ -675,7 +703,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "game" | "mathQuestion"
+      modelProps: "user" | "game" | "invite" | "mathQuestion"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -824,6 +852,80 @@ export namespace Prisma {
           count: {
             args: Prisma.GameCountArgs<ExtArgs>
             result: $Utils.Optional<GameCountAggregateOutputType> | number
+          }
+        }
+      }
+      Invite: {
+        payload: Prisma.$InvitePayload<ExtArgs>
+        fields: Prisma.InviteFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InviteFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InviteFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>
+          }
+          findFirst: {
+            args: Prisma.InviteFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InviteFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>
+          }
+          findMany: {
+            args: Prisma.InviteFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>[]
+          }
+          create: {
+            args: Prisma.InviteCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>
+          }
+          createMany: {
+            args: Prisma.InviteCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InviteCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>[]
+          }
+          delete: {
+            args: Prisma.InviteDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>
+          }
+          update: {
+            args: Prisma.InviteUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>
+          }
+          deleteMany: {
+            args: Prisma.InviteDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InviteUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InviteUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>[]
+          }
+          upsert: {
+            args: Prisma.InviteUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InvitePayload>
+          }
+          aggregate: {
+            args: Prisma.InviteAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInvite>
+          }
+          groupBy: {
+            args: Prisma.InviteGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InviteGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InviteCountArgs<ExtArgs>
+            result: $Utils.Optional<InviteCountAggregateOutputType> | number
           }
         }
       }
@@ -987,6 +1089,7 @@ export namespace Prisma {
   export type GlobalOmitConfig = {
     user?: UserOmit
     game?: GameOmit
+    invite?: InviteOmit
     mathQuestion?: MathQuestionOmit
   }
 
@@ -1086,6 +1189,8 @@ export namespace Prisma {
     gamesAsPlayer1: number
     gamesAsPlayer2: number
     questions: number
+    invitesReceived: number
+    invitesSent: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1093,6 +1198,8 @@ export namespace Prisma {
     gamesAsPlayer1?: boolean | UserCountOutputTypeCountGamesAsPlayer1Args
     gamesAsPlayer2?: boolean | UserCountOutputTypeCountGamesAsPlayer2Args
     questions?: boolean | UserCountOutputTypeCountQuestionsArgs
+    invitesReceived?: boolean | UserCountOutputTypeCountInvitesReceivedArgs
+    invitesSent?: boolean | UserCountOutputTypeCountInvitesSentArgs
   }
 
   // Custom InputTypes
@@ -1134,6 +1241,20 @@ export namespace Prisma {
     where?: MathQuestionWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountInvitesReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InviteWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountInvitesSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InviteWhereInput
+  }
+
 
   /**
    * Count Type GameCountOutputType
@@ -1141,10 +1262,12 @@ export namespace Prisma {
 
   export type GameCountOutputType = {
     questions: number
+    Invite: number
   }
 
   export type GameCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     questions?: boolean | GameCountOutputTypeCountQuestionsArgs
+    Invite?: boolean | GameCountOutputTypeCountInviteArgs
   }
 
   // Custom InputTypes
@@ -1163,6 +1286,13 @@ export namespace Prisma {
    */
   export type GameCountOutputTypeCountQuestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MathQuestionWhereInput
+  }
+
+  /**
+   * GameCountOutputType without action
+   */
+  export type GameCountOutputTypeCountInviteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InviteWhereInput
   }
 
 
@@ -1346,6 +1476,8 @@ export namespace Prisma {
     gamesAsPlayer1?: boolean | User$gamesAsPlayer1Args<ExtArgs>
     gamesAsPlayer2?: boolean | User$gamesAsPlayer2Args<ExtArgs>
     questions?: boolean | User$questionsArgs<ExtArgs>
+    invitesReceived?: boolean | User$invitesReceivedArgs<ExtArgs>
+    invitesSent?: boolean | User$invitesSentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1382,6 +1514,8 @@ export namespace Prisma {
     gamesAsPlayer1?: boolean | User$gamesAsPlayer1Args<ExtArgs>
     gamesAsPlayer2?: boolean | User$gamesAsPlayer2Args<ExtArgs>
     questions?: boolean | User$questionsArgs<ExtArgs>
+    invitesReceived?: boolean | User$invitesReceivedArgs<ExtArgs>
+    invitesSent?: boolean | User$invitesSentArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1394,6 +1528,8 @@ export namespace Prisma {
       gamesAsPlayer1: Prisma.$GamePayload<ExtArgs>[]
       gamesAsPlayer2: Prisma.$GamePayload<ExtArgs>[]
       questions: Prisma.$MathQuestionPayload<ExtArgs>[]
+      invitesReceived: Prisma.$InvitePayload<ExtArgs>[]
+      invitesSent: Prisma.$InvitePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1800,6 +1936,8 @@ export namespace Prisma {
     gamesAsPlayer1<T extends User$gamesAsPlayer1Args<ExtArgs> = {}>(args?: Subset<T, User$gamesAsPlayer1Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gamesAsPlayer2<T extends User$gamesAsPlayer2Args<ExtArgs> = {}>(args?: Subset<T, User$gamesAsPlayer2Args<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     questions<T extends User$questionsArgs<ExtArgs> = {}>(args?: Subset<T, User$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MathQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invitesReceived<T extends User$invitesReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$invitesReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    invitesSent<T extends User$invitesSentArgs<ExtArgs> = {}>(args?: Subset<T, User$invitesSentArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2319,6 +2457,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.invitesReceived
+   */
+  export type User$invitesReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    where?: InviteWhereInput
+    orderBy?: InviteOrderByWithRelationInput | InviteOrderByWithRelationInput[]
+    cursor?: InviteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InviteScalarFieldEnum | InviteScalarFieldEnum[]
+  }
+
+  /**
+   * User.invitesSent
+   */
+  export type User$invitesSentArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    where?: InviteWhereInput
+    orderBy?: InviteOrderByWithRelationInput | InviteOrderByWithRelationInput[]
+    cursor?: InviteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InviteScalarFieldEnum | InviteScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2354,6 +2540,7 @@ export namespace Prisma {
     startedAt: Date | null
     finishedAt: Date | null
     status: $Enums.GameStatus | null
+    questionsType: $Enums.MathQuestionType | null
     player1Id: string | null
     player2Id: string | null
     winnerId: string | null
@@ -2366,6 +2553,7 @@ export namespace Prisma {
     startedAt: Date | null
     finishedAt: Date | null
     status: $Enums.GameStatus | null
+    questionsType: $Enums.MathQuestionType | null
     player1Id: string | null
     player2Id: string | null
     winnerId: string | null
@@ -2378,6 +2566,7 @@ export namespace Prisma {
     startedAt: number
     finishedAt: number
     status: number
+    questionsType: number
     player1Id: number
     player2Id: number
     winnerId: number
@@ -2392,6 +2581,7 @@ export namespace Prisma {
     startedAt?: true
     finishedAt?: true
     status?: true
+    questionsType?: true
     player1Id?: true
     player2Id?: true
     winnerId?: true
@@ -2404,6 +2594,7 @@ export namespace Prisma {
     startedAt?: true
     finishedAt?: true
     status?: true
+    questionsType?: true
     player1Id?: true
     player2Id?: true
     winnerId?: true
@@ -2416,6 +2607,7 @@ export namespace Prisma {
     startedAt?: true
     finishedAt?: true
     status?: true
+    questionsType?: true
     player1Id?: true
     player2Id?: true
     winnerId?: true
@@ -2501,6 +2693,7 @@ export namespace Prisma {
     startedAt: Date
     finishedAt: Date | null
     status: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     player2Id: string
     winnerId: string | null
@@ -2530,6 +2723,7 @@ export namespace Prisma {
     startedAt?: boolean
     finishedAt?: boolean
     status?: boolean
+    questionsType?: boolean
     player1Id?: boolean
     player2Id?: boolean
     winnerId?: boolean
@@ -2537,6 +2731,7 @@ export namespace Prisma {
     player2?: boolean | UserDefaultArgs<ExtArgs>
     winner?: boolean | Game$winnerArgs<ExtArgs>
     questions?: boolean | Game$questionsArgs<ExtArgs>
+    Invite?: boolean | Game$InviteArgs<ExtArgs>
     _count?: boolean | GameCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["game"]>
 
@@ -2547,6 +2742,7 @@ export namespace Prisma {
     startedAt?: boolean
     finishedAt?: boolean
     status?: boolean
+    questionsType?: boolean
     player1Id?: boolean
     player2Id?: boolean
     winnerId?: boolean
@@ -2562,6 +2758,7 @@ export namespace Prisma {
     startedAt?: boolean
     finishedAt?: boolean
     status?: boolean
+    questionsType?: boolean
     player1Id?: boolean
     player2Id?: boolean
     winnerId?: boolean
@@ -2577,17 +2774,19 @@ export namespace Prisma {
     startedAt?: boolean
     finishedAt?: boolean
     status?: boolean
+    questionsType?: boolean
     player1Id?: boolean
     player2Id?: boolean
     winnerId?: boolean
   }
 
-  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "startedAt" | "finishedAt" | "status" | "player1Id" | "player2Id" | "winnerId", ExtArgs["result"]["game"]>
+  export type GameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "startedAt" | "finishedAt" | "status" | "questionsType" | "player1Id" | "player2Id" | "winnerId", ExtArgs["result"]["game"]>
   export type GameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     player1?: boolean | UserDefaultArgs<ExtArgs>
     player2?: boolean | UserDefaultArgs<ExtArgs>
     winner?: boolean | Game$winnerArgs<ExtArgs>
     questions?: boolean | Game$questionsArgs<ExtArgs>
+    Invite?: boolean | Game$InviteArgs<ExtArgs>
     _count?: boolean | GameCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type GameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2608,6 +2807,7 @@ export namespace Prisma {
       player2: Prisma.$UserPayload<ExtArgs>
       winner: Prisma.$UserPayload<ExtArgs> | null
       questions: Prisma.$MathQuestionPayload<ExtArgs>[]
+      Invite: Prisma.$InvitePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2616,6 +2816,7 @@ export namespace Prisma {
       startedAt: Date
       finishedAt: Date | null
       status: $Enums.GameStatus
+      questionsType: $Enums.MathQuestionType
       player1Id: string
       player2Id: string
       winnerId: string | null
@@ -3017,6 +3218,7 @@ export namespace Prisma {
     player2<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     winner<T extends Game$winnerArgs<ExtArgs> = {}>(args?: Subset<T, Game$winnerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     questions<T extends Game$questionsArgs<ExtArgs> = {}>(args?: Subset<T, Game$questionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MathQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Invite<T extends Game$InviteArgs<ExtArgs> = {}>(args?: Subset<T, Game$InviteArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3052,6 +3254,7 @@ export namespace Prisma {
     readonly startedAt: FieldRef<"Game", 'DateTime'>
     readonly finishedAt: FieldRef<"Game", 'DateTime'>
     readonly status: FieldRef<"Game", 'GameStatus'>
+    readonly questionsType: FieldRef<"Game", 'MathQuestionType'>
     readonly player1Id: FieldRef<"Game", 'String'>
     readonly player2Id: FieldRef<"Game", 'String'>
     readonly winnerId: FieldRef<"Game", 'String'>
@@ -3494,6 +3697,30 @@ export namespace Prisma {
   }
 
   /**
+   * Game.Invite
+   */
+  export type Game$InviteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    where?: InviteWhereInput
+    orderBy?: InviteOrderByWithRelationInput | InviteOrderByWithRelationInput[]
+    cursor?: InviteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: InviteScalarFieldEnum | InviteScalarFieldEnum[]
+  }
+
+  /**
    * Game without action
    */
   export type GameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3509,6 +3736,1093 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: GameInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Invite
+   */
+
+  export type AggregateInvite = {
+    _count: InviteCountAggregateOutputType | null
+    _min: InviteMinAggregateOutputType | null
+    _max: InviteMaxAggregateOutputType | null
+  }
+
+  export type InviteMinAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    gameId: string | null
+    toId: string | null
+    fromId: string | null
+  }
+
+  export type InviteMaxAggregateOutputType = {
+    id: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    gameId: string | null
+    toId: string | null
+    fromId: string | null
+  }
+
+  export type InviteCountAggregateOutputType = {
+    id: number
+    createdAt: number
+    updatedAt: number
+    gameId: number
+    toId: number
+    fromId: number
+    _all: number
+  }
+
+
+  export type InviteMinAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    gameId?: true
+    toId?: true
+    fromId?: true
+  }
+
+  export type InviteMaxAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    gameId?: true
+    toId?: true
+    fromId?: true
+  }
+
+  export type InviteCountAggregateInputType = {
+    id?: true
+    createdAt?: true
+    updatedAt?: true
+    gameId?: true
+    toId?: true
+    fromId?: true
+    _all?: true
+  }
+
+  export type InviteAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Invite to aggregate.
+     */
+    where?: InviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invites to fetch.
+     */
+    orderBy?: InviteOrderByWithRelationInput | InviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Invites
+    **/
+    _count?: true | InviteCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InviteMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InviteMaxAggregateInputType
+  }
+
+  export type GetInviteAggregateType<T extends InviteAggregateArgs> = {
+        [P in keyof T & keyof AggregateInvite]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInvite[P]>
+      : GetScalarType<T[P], AggregateInvite[P]>
+  }
+
+
+
+
+  export type InviteGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InviteWhereInput
+    orderBy?: InviteOrderByWithAggregationInput | InviteOrderByWithAggregationInput[]
+    by: InviteScalarFieldEnum[] | InviteScalarFieldEnum
+    having?: InviteScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InviteCountAggregateInputType | true
+    _min?: InviteMinAggregateInputType
+    _max?: InviteMaxAggregateInputType
+  }
+
+  export type InviteGroupByOutputType = {
+    id: string
+    createdAt: Date
+    updatedAt: Date
+    gameId: string
+    toId: string
+    fromId: string
+    _count: InviteCountAggregateOutputType | null
+    _min: InviteMinAggregateOutputType | null
+    _max: InviteMaxAggregateOutputType | null
+  }
+
+  type GetInviteGroupByPayload<T extends InviteGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InviteGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InviteGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InviteGroupByOutputType[P]>
+            : GetScalarType<T[P], InviteGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InviteSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gameId?: boolean
+    toId?: boolean
+    fromId?: boolean
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    to?: boolean | UserDefaultArgs<ExtArgs>
+    from?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["invite"]>
+
+  export type InviteSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gameId?: boolean
+    toId?: boolean
+    fromId?: boolean
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    to?: boolean | UserDefaultArgs<ExtArgs>
+    from?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["invite"]>
+
+  export type InviteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gameId?: boolean
+    toId?: boolean
+    fromId?: boolean
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    to?: boolean | UserDefaultArgs<ExtArgs>
+    from?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["invite"]>
+
+  export type InviteSelectScalar = {
+    id?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    gameId?: boolean
+    toId?: boolean
+    fromId?: boolean
+  }
+
+  export type InviteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "gameId" | "toId" | "fromId", ExtArgs["result"]["invite"]>
+  export type InviteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    to?: boolean | UserDefaultArgs<ExtArgs>
+    from?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type InviteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    to?: boolean | UserDefaultArgs<ExtArgs>
+    from?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type InviteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    game?: boolean | GameDefaultArgs<ExtArgs>
+    to?: boolean | UserDefaultArgs<ExtArgs>
+    from?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $InvitePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Invite"
+    objects: {
+      game: Prisma.$GamePayload<ExtArgs>
+      to: Prisma.$UserPayload<ExtArgs>
+      from: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      createdAt: Date
+      updatedAt: Date
+      gameId: string
+      toId: string
+      fromId: string
+    }, ExtArgs["result"]["invite"]>
+    composites: {}
+  }
+
+  type InviteGetPayload<S extends boolean | null | undefined | InviteDefaultArgs> = $Result.GetResult<Prisma.$InvitePayload, S>
+
+  type InviteCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InviteFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InviteCountAggregateInputType | true
+    }
+
+  export interface InviteDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Invite'], meta: { name: 'Invite' } }
+    /**
+     * Find zero or one Invite that matches the filter.
+     * @param {InviteFindUniqueArgs} args - Arguments to find a Invite
+     * @example
+     * // Get one Invite
+     * const invite = await prisma.invite.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InviteFindUniqueArgs>(args: SelectSubset<T, InviteFindUniqueArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Invite that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InviteFindUniqueOrThrowArgs} args - Arguments to find a Invite
+     * @example
+     * // Get one Invite
+     * const invite = await prisma.invite.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InviteFindUniqueOrThrowArgs>(args: SelectSubset<T, InviteFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Invite that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteFindFirstArgs} args - Arguments to find a Invite
+     * @example
+     * // Get one Invite
+     * const invite = await prisma.invite.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InviteFindFirstArgs>(args?: SelectSubset<T, InviteFindFirstArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Invite that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteFindFirstOrThrowArgs} args - Arguments to find a Invite
+     * @example
+     * // Get one Invite
+     * const invite = await prisma.invite.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InviteFindFirstOrThrowArgs>(args?: SelectSubset<T, InviteFindFirstOrThrowArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Invites that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Invites
+     * const invites = await prisma.invite.findMany()
+     * 
+     * // Get first 10 Invites
+     * const invites = await prisma.invite.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const inviteWithIdOnly = await prisma.invite.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InviteFindManyArgs>(args?: SelectSubset<T, InviteFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Invite.
+     * @param {InviteCreateArgs} args - Arguments to create a Invite.
+     * @example
+     * // Create one Invite
+     * const Invite = await prisma.invite.create({
+     *   data: {
+     *     // ... data to create a Invite
+     *   }
+     * })
+     * 
+     */
+    create<T extends InviteCreateArgs>(args: SelectSubset<T, InviteCreateArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Invites.
+     * @param {InviteCreateManyArgs} args - Arguments to create many Invites.
+     * @example
+     * // Create many Invites
+     * const invite = await prisma.invite.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InviteCreateManyArgs>(args?: SelectSubset<T, InviteCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Invites and returns the data saved in the database.
+     * @param {InviteCreateManyAndReturnArgs} args - Arguments to create many Invites.
+     * @example
+     * // Create many Invites
+     * const invite = await prisma.invite.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Invites and only return the `id`
+     * const inviteWithIdOnly = await prisma.invite.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InviteCreateManyAndReturnArgs>(args?: SelectSubset<T, InviteCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Invite.
+     * @param {InviteDeleteArgs} args - Arguments to delete one Invite.
+     * @example
+     * // Delete one Invite
+     * const Invite = await prisma.invite.delete({
+     *   where: {
+     *     // ... filter to delete one Invite
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InviteDeleteArgs>(args: SelectSubset<T, InviteDeleteArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Invite.
+     * @param {InviteUpdateArgs} args - Arguments to update one Invite.
+     * @example
+     * // Update one Invite
+     * const invite = await prisma.invite.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InviteUpdateArgs>(args: SelectSubset<T, InviteUpdateArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Invites.
+     * @param {InviteDeleteManyArgs} args - Arguments to filter Invites to delete.
+     * @example
+     * // Delete a few Invites
+     * const { count } = await prisma.invite.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InviteDeleteManyArgs>(args?: SelectSubset<T, InviteDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Invites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Invites
+     * const invite = await prisma.invite.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InviteUpdateManyArgs>(args: SelectSubset<T, InviteUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Invites and returns the data updated in the database.
+     * @param {InviteUpdateManyAndReturnArgs} args - Arguments to update many Invites.
+     * @example
+     * // Update many Invites
+     * const invite = await prisma.invite.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Invites and only return the `id`
+     * const inviteWithIdOnly = await prisma.invite.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InviteUpdateManyAndReturnArgs>(args: SelectSubset<T, InviteUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Invite.
+     * @param {InviteUpsertArgs} args - Arguments to update or create a Invite.
+     * @example
+     * // Update or create a Invite
+     * const invite = await prisma.invite.upsert({
+     *   create: {
+     *     // ... data to create a Invite
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Invite we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InviteUpsertArgs>(args: SelectSubset<T, InviteUpsertArgs<ExtArgs>>): Prisma__InviteClient<$Result.GetResult<Prisma.$InvitePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Invites.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteCountArgs} args - Arguments to filter Invites to count.
+     * @example
+     * // Count the number of Invites
+     * const count = await prisma.invite.count({
+     *   where: {
+     *     // ... the filter for the Invites we want to count
+     *   }
+     * })
+    **/
+    count<T extends InviteCountArgs>(
+      args?: Subset<T, InviteCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InviteCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Invite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InviteAggregateArgs>(args: Subset<T, InviteAggregateArgs>): Prisma.PrismaPromise<GetInviteAggregateType<T>>
+
+    /**
+     * Group by Invite.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InviteGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InviteGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InviteGroupByArgs['orderBy'] }
+        : { orderBy?: InviteGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InviteGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInviteGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Invite model
+   */
+  readonly fields: InviteFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Invite.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InviteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    game<T extends GameDefaultArgs<ExtArgs> = {}>(args?: Subset<T, GameDefaultArgs<ExtArgs>>): Prisma__GameClient<$Result.GetResult<Prisma.$GamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    to<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    from<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Invite model
+   */
+  interface InviteFieldRefs {
+    readonly id: FieldRef<"Invite", 'String'>
+    readonly createdAt: FieldRef<"Invite", 'DateTime'>
+    readonly updatedAt: FieldRef<"Invite", 'DateTime'>
+    readonly gameId: FieldRef<"Invite", 'String'>
+    readonly toId: FieldRef<"Invite", 'String'>
+    readonly fromId: FieldRef<"Invite", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Invite findUnique
+   */
+  export type InviteFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * Filter, which Invite to fetch.
+     */
+    where: InviteWhereUniqueInput
+  }
+
+  /**
+   * Invite findUniqueOrThrow
+   */
+  export type InviteFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * Filter, which Invite to fetch.
+     */
+    where: InviteWhereUniqueInput
+  }
+
+  /**
+   * Invite findFirst
+   */
+  export type InviteFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * Filter, which Invite to fetch.
+     */
+    where?: InviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invites to fetch.
+     */
+    orderBy?: InviteOrderByWithRelationInput | InviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Invites.
+     */
+    cursor?: InviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Invites.
+     */
+    distinct?: InviteScalarFieldEnum | InviteScalarFieldEnum[]
+  }
+
+  /**
+   * Invite findFirstOrThrow
+   */
+  export type InviteFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * Filter, which Invite to fetch.
+     */
+    where?: InviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invites to fetch.
+     */
+    orderBy?: InviteOrderByWithRelationInput | InviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Invites.
+     */
+    cursor?: InviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invites.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Invites.
+     */
+    distinct?: InviteScalarFieldEnum | InviteScalarFieldEnum[]
+  }
+
+  /**
+   * Invite findMany
+   */
+  export type InviteFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * Filter, which Invites to fetch.
+     */
+    where?: InviteWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Invites to fetch.
+     */
+    orderBy?: InviteOrderByWithRelationInput | InviteOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Invites.
+     */
+    cursor?: InviteWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Invites from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Invites.
+     */
+    skip?: number
+    distinct?: InviteScalarFieldEnum | InviteScalarFieldEnum[]
+  }
+
+  /**
+   * Invite create
+   */
+  export type InviteCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Invite.
+     */
+    data: XOR<InviteCreateInput, InviteUncheckedCreateInput>
+  }
+
+  /**
+   * Invite createMany
+   */
+  export type InviteCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Invites.
+     */
+    data: InviteCreateManyInput | InviteCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Invite createManyAndReturn
+   */
+  export type InviteCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * The data used to create many Invites.
+     */
+    data: InviteCreateManyInput | InviteCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Invite update
+   */
+  export type InviteUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Invite.
+     */
+    data: XOR<InviteUpdateInput, InviteUncheckedUpdateInput>
+    /**
+     * Choose, which Invite to update.
+     */
+    where: InviteWhereUniqueInput
+  }
+
+  /**
+   * Invite updateMany
+   */
+  export type InviteUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Invites.
+     */
+    data: XOR<InviteUpdateManyMutationInput, InviteUncheckedUpdateManyInput>
+    /**
+     * Filter which Invites to update
+     */
+    where?: InviteWhereInput
+    /**
+     * Limit how many Invites to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Invite updateManyAndReturn
+   */
+  export type InviteUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * The data used to update Invites.
+     */
+    data: XOR<InviteUpdateManyMutationInput, InviteUncheckedUpdateManyInput>
+    /**
+     * Filter which Invites to update
+     */
+    where?: InviteWhereInput
+    /**
+     * Limit how many Invites to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Invite upsert
+   */
+  export type InviteUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Invite to update in case it exists.
+     */
+    where: InviteWhereUniqueInput
+    /**
+     * In case the Invite found by the `where` argument doesn't exist, create a new Invite with this data.
+     */
+    create: XOR<InviteCreateInput, InviteUncheckedCreateInput>
+    /**
+     * In case the Invite was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InviteUpdateInput, InviteUncheckedUpdateInput>
+  }
+
+  /**
+   * Invite delete
+   */
+  export type InviteDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
+    /**
+     * Filter which Invite to delete.
+     */
+    where: InviteWhereUniqueInput
+  }
+
+  /**
+   * Invite deleteMany
+   */
+  export type InviteDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Invites to delete
+     */
+    where?: InviteWhereInput
+    /**
+     * Limit how many Invites to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Invite without action
+   */
+  export type InviteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Invite
+     */
+    select?: InviteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Invite
+     */
+    omit?: InviteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InviteInclude<ExtArgs> | null
   }
 
 
@@ -3541,11 +4855,11 @@ export namespace Prisma {
     question: string | null
     correctAnswer: string | null
     answer: string | null
-    type: $Enums.MathQuestionType | null
     score: number | null
     responseTimeMs: number | null
     gameId: string | null
     playerId: string | null
+    status: $Enums.MathQuestionStatus | null
   }
 
   export type MathQuestionMaxAggregateOutputType = {
@@ -3555,11 +4869,11 @@ export namespace Prisma {
     question: string | null
     correctAnswer: string | null
     answer: string | null
-    type: $Enums.MathQuestionType | null
     score: number | null
     responseTimeMs: number | null
     gameId: string | null
     playerId: string | null
+    status: $Enums.MathQuestionStatus | null
   }
 
   export type MathQuestionCountAggregateOutputType = {
@@ -3569,11 +4883,11 @@ export namespace Prisma {
     question: number
     correctAnswer: number
     answer: number
-    type: number
     score: number
     responseTimeMs: number
     gameId: number
     playerId: number
+    status: number
     _all: number
   }
 
@@ -3595,11 +4909,11 @@ export namespace Prisma {
     question?: true
     correctAnswer?: true
     answer?: true
-    type?: true
     score?: true
     responseTimeMs?: true
     gameId?: true
     playerId?: true
+    status?: true
   }
 
   export type MathQuestionMaxAggregateInputType = {
@@ -3609,11 +4923,11 @@ export namespace Prisma {
     question?: true
     correctAnswer?: true
     answer?: true
-    type?: true
     score?: true
     responseTimeMs?: true
     gameId?: true
     playerId?: true
+    status?: true
   }
 
   export type MathQuestionCountAggregateInputType = {
@@ -3623,11 +4937,11 @@ export namespace Prisma {
     question?: true
     correctAnswer?: true
     answer?: true
-    type?: true
     score?: true
     responseTimeMs?: true
     gameId?: true
     playerId?: true
+    status?: true
     _all?: true
   }
 
@@ -3724,11 +5038,11 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer: string | null
-    type: $Enums.MathQuestionType
     score: number
     responseTimeMs: number | null
     gameId: string
     playerId: string
+    status: $Enums.MathQuestionStatus
     _count: MathQuestionCountAggregateOutputType | null
     _avg: MathQuestionAvgAggregateOutputType | null
     _sum: MathQuestionSumAggregateOutputType | null
@@ -3757,11 +5071,11 @@ export namespace Prisma {
     question?: boolean
     correctAnswer?: boolean
     answer?: boolean
-    type?: boolean
     score?: boolean
     responseTimeMs?: boolean
     gameId?: boolean
     playerId?: boolean
+    status?: boolean
     game?: boolean | GameDefaultArgs<ExtArgs>
     player?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mathQuestion"]>
@@ -3773,11 +5087,11 @@ export namespace Prisma {
     question?: boolean
     correctAnswer?: boolean
     answer?: boolean
-    type?: boolean
     score?: boolean
     responseTimeMs?: boolean
     gameId?: boolean
     playerId?: boolean
+    status?: boolean
     game?: boolean | GameDefaultArgs<ExtArgs>
     player?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mathQuestion"]>
@@ -3789,11 +5103,11 @@ export namespace Prisma {
     question?: boolean
     correctAnswer?: boolean
     answer?: boolean
-    type?: boolean
     score?: boolean
     responseTimeMs?: boolean
     gameId?: boolean
     playerId?: boolean
+    status?: boolean
     game?: boolean | GameDefaultArgs<ExtArgs>
     player?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["mathQuestion"]>
@@ -3805,14 +5119,14 @@ export namespace Prisma {
     question?: boolean
     correctAnswer?: boolean
     answer?: boolean
-    type?: boolean
     score?: boolean
     responseTimeMs?: boolean
     gameId?: boolean
     playerId?: boolean
+    status?: boolean
   }
 
-  export type MathQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "question" | "correctAnswer" | "answer" | "type" | "score" | "responseTimeMs" | "gameId" | "playerId", ExtArgs["result"]["mathQuestion"]>
+  export type MathQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "createdAt" | "updatedAt" | "question" | "correctAnswer" | "answer" | "score" | "responseTimeMs" | "gameId" | "playerId" | "status", ExtArgs["result"]["mathQuestion"]>
   export type MathQuestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     game?: boolean | GameDefaultArgs<ExtArgs>
     player?: boolean | UserDefaultArgs<ExtArgs>
@@ -3839,11 +5153,11 @@ export namespace Prisma {
       question: string
       correctAnswer: string
       answer: string | null
-      type: $Enums.MathQuestionType
       score: number
       responseTimeMs: number | null
       gameId: string
       playerId: string
+      status: $Enums.MathQuestionStatus
     }, ExtArgs["result"]["mathQuestion"]>
     composites: {}
   }
@@ -4275,11 +5589,11 @@ export namespace Prisma {
     readonly question: FieldRef<"MathQuestion", 'String'>
     readonly correctAnswer: FieldRef<"MathQuestion", 'String'>
     readonly answer: FieldRef<"MathQuestion", 'String'>
-    readonly type: FieldRef<"MathQuestion", 'MathQuestionType'>
     readonly score: FieldRef<"MathQuestion", 'Int'>
     readonly responseTimeMs: FieldRef<"MathQuestion", 'Int'>
     readonly gameId: FieldRef<"MathQuestion", 'String'>
     readonly playerId: FieldRef<"MathQuestion", 'String'>
+    readonly status: FieldRef<"MathQuestion", 'MathQuestionStatus'>
   }
     
 
@@ -4727,12 +6041,25 @@ export namespace Prisma {
     startedAt: 'startedAt',
     finishedAt: 'finishedAt',
     status: 'status',
+    questionsType: 'questionsType',
     player1Id: 'player1Id',
     player2Id: 'player2Id',
     winnerId: 'winnerId'
   };
 
   export type GameScalarFieldEnum = (typeof GameScalarFieldEnum)[keyof typeof GameScalarFieldEnum]
+
+
+  export const InviteScalarFieldEnum: {
+    id: 'id',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    gameId: 'gameId',
+    toId: 'toId',
+    fromId: 'fromId'
+  };
+
+  export type InviteScalarFieldEnum = (typeof InviteScalarFieldEnum)[keyof typeof InviteScalarFieldEnum]
 
 
   export const MathQuestionScalarFieldEnum: {
@@ -4742,11 +6069,11 @@ export namespace Prisma {
     question: 'question',
     correctAnswer: 'correctAnswer',
     answer: 'answer',
-    type: 'type',
     score: 'score',
     responseTimeMs: 'responseTimeMs',
     gameId: 'gameId',
-    playerId: 'playerId'
+    playerId: 'playerId',
+    status: 'status'
   };
 
   export type MathQuestionScalarFieldEnum = (typeof MathQuestionScalarFieldEnum)[keyof typeof MathQuestionScalarFieldEnum]
@@ -4852,6 +6179,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'MathQuestionStatus'
+   */
+  export type EnumMathQuestionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MathQuestionStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MathQuestionStatus[]'
+   */
+  export type ListEnumMathQuestionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MathQuestionStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -4882,6 +6223,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameListRelationFilter
     gamesAsPlayer2?: GameListRelationFilter
     questions?: MathQuestionListRelationFilter
+    invitesReceived?: InviteListRelationFilter
+    invitesSent?: InviteListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -4895,6 +6238,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameOrderByRelationAggregateInput
     gamesAsPlayer2?: GameOrderByRelationAggregateInput
     questions?: MathQuestionOrderByRelationAggregateInput
+    invitesReceived?: InviteOrderByRelationAggregateInput
+    invitesSent?: InviteOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4911,6 +6256,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameListRelationFilter
     gamesAsPlayer2?: GameListRelationFilter
     questions?: MathQuestionListRelationFilter
+    invitesReceived?: InviteListRelationFilter
+    invitesSent?: InviteListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -4947,6 +6294,7 @@ export namespace Prisma {
     startedAt?: DateTimeFilter<"Game"> | Date | string
     finishedAt?: DateTimeNullableFilter<"Game"> | Date | string | null
     status?: EnumGameStatusFilter<"Game"> | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFilter<"Game"> | $Enums.MathQuestionType
     player1Id?: StringFilter<"Game"> | string
     player2Id?: StringFilter<"Game"> | string
     winnerId?: StringNullableFilter<"Game"> | string | null
@@ -4954,6 +6302,7 @@ export namespace Prisma {
     player2?: XOR<UserScalarRelationFilter, UserWhereInput>
     winner?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     questions?: MathQuestionListRelationFilter
+    Invite?: InviteListRelationFilter
   }
 
   export type GameOrderByWithRelationInput = {
@@ -4963,6 +6312,7 @@ export namespace Prisma {
     startedAt?: SortOrder
     finishedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    questionsType?: SortOrder
     player1Id?: SortOrder
     player2Id?: SortOrder
     winnerId?: SortOrderInput | SortOrder
@@ -4970,6 +6320,7 @@ export namespace Prisma {
     player2?: UserOrderByWithRelationInput
     winner?: UserOrderByWithRelationInput
     questions?: MathQuestionOrderByRelationAggregateInput
+    Invite?: InviteOrderByRelationAggregateInput
   }
 
   export type GameWhereUniqueInput = Prisma.AtLeast<{
@@ -4982,6 +6333,7 @@ export namespace Prisma {
     startedAt?: DateTimeFilter<"Game"> | Date | string
     finishedAt?: DateTimeNullableFilter<"Game"> | Date | string | null
     status?: EnumGameStatusFilter<"Game"> | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFilter<"Game"> | $Enums.MathQuestionType
     player1Id?: StringFilter<"Game"> | string
     player2Id?: StringFilter<"Game"> | string
     winnerId?: StringNullableFilter<"Game"> | string | null
@@ -4989,6 +6341,7 @@ export namespace Prisma {
     player2?: XOR<UserScalarRelationFilter, UserWhereInput>
     winner?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     questions?: MathQuestionListRelationFilter
+    Invite?: InviteListRelationFilter
   }, "id">
 
   export type GameOrderByWithAggregationInput = {
@@ -4998,6 +6351,7 @@ export namespace Prisma {
     startedAt?: SortOrder
     finishedAt?: SortOrderInput | SortOrder
     status?: SortOrder
+    questionsType?: SortOrder
     player1Id?: SortOrder
     player2Id?: SortOrder
     winnerId?: SortOrderInput | SortOrder
@@ -5016,9 +6370,76 @@ export namespace Prisma {
     startedAt?: DateTimeWithAggregatesFilter<"Game"> | Date | string
     finishedAt?: DateTimeNullableWithAggregatesFilter<"Game"> | Date | string | null
     status?: EnumGameStatusWithAggregatesFilter<"Game"> | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeWithAggregatesFilter<"Game"> | $Enums.MathQuestionType
     player1Id?: StringWithAggregatesFilter<"Game"> | string
     player2Id?: StringWithAggregatesFilter<"Game"> | string
     winnerId?: StringNullableWithAggregatesFilter<"Game"> | string | null
+  }
+
+  export type InviteWhereInput = {
+    AND?: InviteWhereInput | InviteWhereInput[]
+    OR?: InviteWhereInput[]
+    NOT?: InviteWhereInput | InviteWhereInput[]
+    id?: StringFilter<"Invite"> | string
+    createdAt?: DateTimeFilter<"Invite"> | Date | string
+    updatedAt?: DateTimeFilter<"Invite"> | Date | string
+    gameId?: StringFilter<"Invite"> | string
+    toId?: StringFilter<"Invite"> | string
+    fromId?: StringFilter<"Invite"> | string
+    game?: XOR<GameScalarRelationFilter, GameWhereInput>
+    to?: XOR<UserScalarRelationFilter, UserWhereInput>
+    from?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type InviteOrderByWithRelationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gameId?: SortOrder
+    toId?: SortOrder
+    fromId?: SortOrder
+    game?: GameOrderByWithRelationInput
+    to?: UserOrderByWithRelationInput
+    from?: UserOrderByWithRelationInput
+  }
+
+  export type InviteWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: InviteWhereInput | InviteWhereInput[]
+    OR?: InviteWhereInput[]
+    NOT?: InviteWhereInput | InviteWhereInput[]
+    createdAt?: DateTimeFilter<"Invite"> | Date | string
+    updatedAt?: DateTimeFilter<"Invite"> | Date | string
+    gameId?: StringFilter<"Invite"> | string
+    toId?: StringFilter<"Invite"> | string
+    fromId?: StringFilter<"Invite"> | string
+    game?: XOR<GameScalarRelationFilter, GameWhereInput>
+    to?: XOR<UserScalarRelationFilter, UserWhereInput>
+    from?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type InviteOrderByWithAggregationInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gameId?: SortOrder
+    toId?: SortOrder
+    fromId?: SortOrder
+    _count?: InviteCountOrderByAggregateInput
+    _max?: InviteMaxOrderByAggregateInput
+    _min?: InviteMinOrderByAggregateInput
+  }
+
+  export type InviteScalarWhereWithAggregatesInput = {
+    AND?: InviteScalarWhereWithAggregatesInput | InviteScalarWhereWithAggregatesInput[]
+    OR?: InviteScalarWhereWithAggregatesInput[]
+    NOT?: InviteScalarWhereWithAggregatesInput | InviteScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Invite"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Invite"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Invite"> | Date | string
+    gameId?: StringWithAggregatesFilter<"Invite"> | string
+    toId?: StringWithAggregatesFilter<"Invite"> | string
+    fromId?: StringWithAggregatesFilter<"Invite"> | string
   }
 
   export type MathQuestionWhereInput = {
@@ -5031,11 +6452,11 @@ export namespace Prisma {
     question?: StringFilter<"MathQuestion"> | string
     correctAnswer?: StringFilter<"MathQuestion"> | string
     answer?: StringNullableFilter<"MathQuestion"> | string | null
-    type?: EnumMathQuestionTypeFilter<"MathQuestion"> | $Enums.MathQuestionType
     score?: IntFilter<"MathQuestion"> | number
     responseTimeMs?: IntNullableFilter<"MathQuestion"> | number | null
     gameId?: StringFilter<"MathQuestion"> | string
     playerId?: StringFilter<"MathQuestion"> | string
+    status?: EnumMathQuestionStatusFilter<"MathQuestion"> | $Enums.MathQuestionStatus
     game?: XOR<GameScalarRelationFilter, GameWhereInput>
     player?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -5047,11 +6468,11 @@ export namespace Prisma {
     question?: SortOrder
     correctAnswer?: SortOrder
     answer?: SortOrderInput | SortOrder
-    type?: SortOrder
     score?: SortOrder
     responseTimeMs?: SortOrderInput | SortOrder
     gameId?: SortOrder
     playerId?: SortOrder
+    status?: SortOrder
     game?: GameOrderByWithRelationInput
     player?: UserOrderByWithRelationInput
   }
@@ -5066,11 +6487,11 @@ export namespace Prisma {
     question?: StringFilter<"MathQuestion"> | string
     correctAnswer?: StringFilter<"MathQuestion"> | string
     answer?: StringNullableFilter<"MathQuestion"> | string | null
-    type?: EnumMathQuestionTypeFilter<"MathQuestion"> | $Enums.MathQuestionType
     score?: IntFilter<"MathQuestion"> | number
     responseTimeMs?: IntNullableFilter<"MathQuestion"> | number | null
     gameId?: StringFilter<"MathQuestion"> | string
     playerId?: StringFilter<"MathQuestion"> | string
+    status?: EnumMathQuestionStatusFilter<"MathQuestion"> | $Enums.MathQuestionStatus
     game?: XOR<GameScalarRelationFilter, GameWhereInput>
     player?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id">
@@ -5082,11 +6503,11 @@ export namespace Prisma {
     question?: SortOrder
     correctAnswer?: SortOrder
     answer?: SortOrderInput | SortOrder
-    type?: SortOrder
     score?: SortOrder
     responseTimeMs?: SortOrderInput | SortOrder
     gameId?: SortOrder
     playerId?: SortOrder
+    status?: SortOrder
     _count?: MathQuestionCountOrderByAggregateInput
     _avg?: MathQuestionAvgOrderByAggregateInput
     _max?: MathQuestionMaxOrderByAggregateInput
@@ -5104,11 +6525,11 @@ export namespace Prisma {
     question?: StringWithAggregatesFilter<"MathQuestion"> | string
     correctAnswer?: StringWithAggregatesFilter<"MathQuestion"> | string
     answer?: StringNullableWithAggregatesFilter<"MathQuestion"> | string | null
-    type?: EnumMathQuestionTypeWithAggregatesFilter<"MathQuestion"> | $Enums.MathQuestionType
     score?: IntWithAggregatesFilter<"MathQuestion"> | number
     responseTimeMs?: IntNullableWithAggregatesFilter<"MathQuestion"> | number | null
     gameId?: StringWithAggregatesFilter<"MathQuestion"> | string
     playerId?: StringWithAggregatesFilter<"MathQuestion"> | string
+    status?: EnumMathQuestionStatusWithAggregatesFilter<"MathQuestion"> | $Enums.MathQuestionStatus
   }
 
   export type UserCreateInput = {
@@ -5122,6 +6543,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameCreateNestedManyWithoutPlayer1Input
     gamesAsPlayer2?: GameCreateNestedManyWithoutPlayer2Input
     questions?: MathQuestionCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteCreateNestedManyWithoutToInput
+    invitesSent?: InviteCreateNestedManyWithoutFromInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -5135,6 +6558,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameUncheckedCreateNestedManyWithoutPlayer1Input
     gamesAsPlayer2?: GameUncheckedCreateNestedManyWithoutPlayer2Input
     questions?: MathQuestionUncheckedCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteUncheckedCreateNestedManyWithoutToInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutFromInput
   }
 
   export type UserUpdateInput = {
@@ -5148,6 +6573,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameUpdateManyWithoutPlayer1NestedInput
     gamesAsPlayer2?: GameUpdateManyWithoutPlayer2NestedInput
     questions?: MathQuestionUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUpdateManyWithoutFromNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -5161,6 +6588,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameUncheckedUpdateManyWithoutPlayer1NestedInput
     gamesAsPlayer2?: GameUncheckedUpdateManyWithoutPlayer2NestedInput
     questions?: MathQuestionUncheckedUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUncheckedUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutFromNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -5197,10 +6626,12 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1: UserCreateNestedOneWithoutGamesAsPlayer1Input
     player2: UserCreateNestedOneWithoutGamesAsPlayer2Input
     winner?: UserCreateNestedOneWithoutGamesWonInput
     questions?: MathQuestionCreateNestedManyWithoutGameInput
+    Invite?: InviteCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateInput = {
@@ -5210,10 +6641,12 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     player2Id: string
     winnerId?: string | null
     questions?: MathQuestionUncheckedCreateNestedManyWithoutGameInput
+    Invite?: InviteUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameUpdateInput = {
@@ -5223,10 +6656,12 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1?: UserUpdateOneRequiredWithoutGamesAsPlayer1NestedInput
     player2?: UserUpdateOneRequiredWithoutGamesAsPlayer2NestedInput
     winner?: UserUpdateOneWithoutGamesWonNestedInput
     questions?: MathQuestionUpdateManyWithoutGameNestedInput
+    Invite?: InviteUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateInput = {
@@ -5236,10 +6671,12 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1Id?: StringFieldUpdateOperationsInput | string
     player2Id?: StringFieldUpdateOperationsInput | string
     winnerId?: NullableStringFieldUpdateOperationsInput | string | null
     questions?: MathQuestionUncheckedUpdateManyWithoutGameNestedInput
+    Invite?: InviteUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type GameCreateManyInput = {
@@ -5249,6 +6686,7 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     player2Id: string
     winnerId?: string | null
@@ -5261,6 +6699,7 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
   }
 
   export type GameUncheckedUpdateManyInput = {
@@ -5270,9 +6709,70 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1Id?: StringFieldUpdateOperationsInput | string
     player2Id?: StringFieldUpdateOperationsInput | string
     winnerId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type InviteCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    game: GameCreateNestedOneWithoutInviteInput
+    to: UserCreateNestedOneWithoutInvitesReceivedInput
+    from: UserCreateNestedOneWithoutInvitesSentInput
+  }
+
+  export type InviteUncheckedCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gameId: string
+    toId: string
+    fromId: string
+  }
+
+  export type InviteUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    game?: GameUpdateOneRequiredWithoutInviteNestedInput
+    to?: UserUpdateOneRequiredWithoutInvitesReceivedNestedInput
+    from?: UserUpdateOneRequiredWithoutInvitesSentNestedInput
+  }
+
+  export type InviteUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type InviteCreateManyInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gameId: string
+    toId: string
+    fromId: string
+  }
+
+  export type InviteUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InviteUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MathQuestionCreateInput = {
@@ -5282,9 +6782,9 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
+    status?: $Enums.MathQuestionStatus
     game: GameCreateNestedOneWithoutQuestionsInput
     player: UserCreateNestedOneWithoutQuestionsInput
   }
@@ -5296,11 +6796,11 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
     gameId: string
     playerId: string
+    status?: $Enums.MathQuestionStatus
   }
 
   export type MathQuestionUpdateInput = {
@@ -5310,9 +6810,9 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
     game?: GameUpdateOneRequiredWithoutQuestionsNestedInput
     player?: UserUpdateOneRequiredWithoutQuestionsNestedInput
   }
@@ -5324,11 +6824,11 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
     gameId?: StringFieldUpdateOperationsInput | string
     playerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
   }
 
   export type MathQuestionCreateManyInput = {
@@ -5338,11 +6838,11 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
     gameId: string
     playerId: string
+    status?: $Enums.MathQuestionStatus
   }
 
   export type MathQuestionUpdateManyMutationInput = {
@@ -5352,9 +6852,9 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
   }
 
   export type MathQuestionUncheckedUpdateManyInput = {
@@ -5364,11 +6864,11 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
     gameId?: StringFieldUpdateOperationsInput | string
     playerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -5424,6 +6924,12 @@ export namespace Prisma {
     none?: MathQuestionWhereInput
   }
 
+  export type InviteListRelationFilter = {
+    every?: InviteWhereInput
+    some?: InviteWhereInput
+    none?: InviteWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -5434,6 +6940,10 @@ export namespace Prisma {
   }
 
   export type MathQuestionOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InviteOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -5532,6 +7042,13 @@ export namespace Prisma {
     not?: NestedEnumGameStatusFilter<$PrismaModel> | $Enums.GameStatus
   }
 
+  export type EnumMathQuestionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MathQuestionType | EnumMathQuestionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMathQuestionTypeFilter<$PrismaModel> | $Enums.MathQuestionType
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -5549,6 +7066,7 @@ export namespace Prisma {
     startedAt?: SortOrder
     finishedAt?: SortOrder
     status?: SortOrder
+    questionsType?: SortOrder
     player1Id?: SortOrder
     player2Id?: SortOrder
     winnerId?: SortOrder
@@ -5561,6 +7079,7 @@ export namespace Prisma {
     startedAt?: SortOrder
     finishedAt?: SortOrder
     status?: SortOrder
+    questionsType?: SortOrder
     player1Id?: SortOrder
     player2Id?: SortOrder
     winnerId?: SortOrder
@@ -5573,6 +7092,7 @@ export namespace Prisma {
     startedAt?: SortOrder
     finishedAt?: SortOrder
     status?: SortOrder
+    questionsType?: SortOrder
     player1Id?: SortOrder
     player2Id?: SortOrder
     winnerId?: SortOrder
@@ -5602,11 +7122,46 @@ export namespace Prisma {
     _max?: NestedEnumGameStatusFilter<$PrismaModel>
   }
 
-  export type EnumMathQuestionTypeFilter<$PrismaModel = never> = {
+  export type EnumMathQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.MathQuestionType | EnumMathQuestionTypeFieldRefInput<$PrismaModel>
     in?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
     notIn?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumMathQuestionTypeFilter<$PrismaModel> | $Enums.MathQuestionType
+    not?: NestedEnumMathQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.MathQuestionType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMathQuestionTypeFilter<$PrismaModel>
+    _max?: NestedEnumMathQuestionTypeFilter<$PrismaModel>
+  }
+
+  export type GameScalarRelationFilter = {
+    is?: GameWhereInput
+    isNot?: GameWhereInput
+  }
+
+  export type InviteCountOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gameId?: SortOrder
+    toId?: SortOrder
+    fromId?: SortOrder
+  }
+
+  export type InviteMaxOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gameId?: SortOrder
+    toId?: SortOrder
+    fromId?: SortOrder
+  }
+
+  export type InviteMinOrderByAggregateInput = {
+    id?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    gameId?: SortOrder
+    toId?: SortOrder
+    fromId?: SortOrder
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -5631,9 +7186,11 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type GameScalarRelationFilter = {
-    is?: GameWhereInput
-    isNot?: GameWhereInput
+  export type EnumMathQuestionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MathQuestionStatus | EnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMathQuestionStatusFilter<$PrismaModel> | $Enums.MathQuestionStatus
   }
 
   export type MathQuestionCountOrderByAggregateInput = {
@@ -5643,11 +7200,11 @@ export namespace Prisma {
     question?: SortOrder
     correctAnswer?: SortOrder
     answer?: SortOrder
-    type?: SortOrder
     score?: SortOrder
     responseTimeMs?: SortOrder
     gameId?: SortOrder
     playerId?: SortOrder
+    status?: SortOrder
   }
 
   export type MathQuestionAvgOrderByAggregateInput = {
@@ -5662,11 +7219,11 @@ export namespace Prisma {
     question?: SortOrder
     correctAnswer?: SortOrder
     answer?: SortOrder
-    type?: SortOrder
     score?: SortOrder
     responseTimeMs?: SortOrder
     gameId?: SortOrder
     playerId?: SortOrder
+    status?: SortOrder
   }
 
   export type MathQuestionMinOrderByAggregateInput = {
@@ -5676,26 +7233,16 @@ export namespace Prisma {
     question?: SortOrder
     correctAnswer?: SortOrder
     answer?: SortOrder
-    type?: SortOrder
     score?: SortOrder
     responseTimeMs?: SortOrder
     gameId?: SortOrder
     playerId?: SortOrder
+    status?: SortOrder
   }
 
   export type MathQuestionSumOrderByAggregateInput = {
     score?: SortOrder
     responseTimeMs?: SortOrder
-  }
-
-  export type EnumMathQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.MathQuestionType | EnumMathQuestionTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumMathQuestionTypeWithAggregatesFilter<$PrismaModel> | $Enums.MathQuestionType
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumMathQuestionTypeFilter<$PrismaModel>
-    _max?: NestedEnumMathQuestionTypeFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -5730,6 +7277,16 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type EnumMathQuestionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MathQuestionStatus | EnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMathQuestionStatusWithAggregatesFilter<$PrismaModel> | $Enums.MathQuestionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMathQuestionStatusFilter<$PrismaModel>
+    _max?: NestedEnumMathQuestionStatusFilter<$PrismaModel>
+  }
+
   export type GameCreateNestedManyWithoutWinnerInput = {
     create?: XOR<GameCreateWithoutWinnerInput, GameUncheckedCreateWithoutWinnerInput> | GameCreateWithoutWinnerInput[] | GameUncheckedCreateWithoutWinnerInput[]
     connectOrCreate?: GameCreateOrConnectWithoutWinnerInput | GameCreateOrConnectWithoutWinnerInput[]
@@ -5758,6 +7315,20 @@ export namespace Prisma {
     connect?: MathQuestionWhereUniqueInput | MathQuestionWhereUniqueInput[]
   }
 
+  export type InviteCreateNestedManyWithoutToInput = {
+    create?: XOR<InviteCreateWithoutToInput, InviteUncheckedCreateWithoutToInput> | InviteCreateWithoutToInput[] | InviteUncheckedCreateWithoutToInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutToInput | InviteCreateOrConnectWithoutToInput[]
+    createMany?: InviteCreateManyToInputEnvelope
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+  }
+
+  export type InviteCreateNestedManyWithoutFromInput = {
+    create?: XOR<InviteCreateWithoutFromInput, InviteUncheckedCreateWithoutFromInput> | InviteCreateWithoutFromInput[] | InviteUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutFromInput | InviteCreateOrConnectWithoutFromInput[]
+    createMany?: InviteCreateManyFromInputEnvelope
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+  }
+
   export type GameUncheckedCreateNestedManyWithoutWinnerInput = {
     create?: XOR<GameCreateWithoutWinnerInput, GameUncheckedCreateWithoutWinnerInput> | GameCreateWithoutWinnerInput[] | GameUncheckedCreateWithoutWinnerInput[]
     connectOrCreate?: GameCreateOrConnectWithoutWinnerInput | GameCreateOrConnectWithoutWinnerInput[]
@@ -5784,6 +7355,20 @@ export namespace Prisma {
     connectOrCreate?: MathQuestionCreateOrConnectWithoutPlayerInput | MathQuestionCreateOrConnectWithoutPlayerInput[]
     createMany?: MathQuestionCreateManyPlayerInputEnvelope
     connect?: MathQuestionWhereUniqueInput | MathQuestionWhereUniqueInput[]
+  }
+
+  export type InviteUncheckedCreateNestedManyWithoutToInput = {
+    create?: XOR<InviteCreateWithoutToInput, InviteUncheckedCreateWithoutToInput> | InviteCreateWithoutToInput[] | InviteUncheckedCreateWithoutToInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutToInput | InviteCreateOrConnectWithoutToInput[]
+    createMany?: InviteCreateManyToInputEnvelope
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+  }
+
+  export type InviteUncheckedCreateNestedManyWithoutFromInput = {
+    create?: XOR<InviteCreateWithoutFromInput, InviteUncheckedCreateWithoutFromInput> | InviteCreateWithoutFromInput[] | InviteUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutFromInput | InviteCreateOrConnectWithoutFromInput[]
+    createMany?: InviteCreateManyFromInputEnvelope
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5854,6 +7439,34 @@ export namespace Prisma {
     deleteMany?: MathQuestionScalarWhereInput | MathQuestionScalarWhereInput[]
   }
 
+  export type InviteUpdateManyWithoutToNestedInput = {
+    create?: XOR<InviteCreateWithoutToInput, InviteUncheckedCreateWithoutToInput> | InviteCreateWithoutToInput[] | InviteUncheckedCreateWithoutToInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutToInput | InviteCreateOrConnectWithoutToInput[]
+    upsert?: InviteUpsertWithWhereUniqueWithoutToInput | InviteUpsertWithWhereUniqueWithoutToInput[]
+    createMany?: InviteCreateManyToInputEnvelope
+    set?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    disconnect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    delete?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    update?: InviteUpdateWithWhereUniqueWithoutToInput | InviteUpdateWithWhereUniqueWithoutToInput[]
+    updateMany?: InviteUpdateManyWithWhereWithoutToInput | InviteUpdateManyWithWhereWithoutToInput[]
+    deleteMany?: InviteScalarWhereInput | InviteScalarWhereInput[]
+  }
+
+  export type InviteUpdateManyWithoutFromNestedInput = {
+    create?: XOR<InviteCreateWithoutFromInput, InviteUncheckedCreateWithoutFromInput> | InviteCreateWithoutFromInput[] | InviteUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutFromInput | InviteCreateOrConnectWithoutFromInput[]
+    upsert?: InviteUpsertWithWhereUniqueWithoutFromInput | InviteUpsertWithWhereUniqueWithoutFromInput[]
+    createMany?: InviteCreateManyFromInputEnvelope
+    set?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    disconnect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    delete?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    update?: InviteUpdateWithWhereUniqueWithoutFromInput | InviteUpdateWithWhereUniqueWithoutFromInput[]
+    updateMany?: InviteUpdateManyWithWhereWithoutFromInput | InviteUpdateManyWithWhereWithoutFromInput[]
+    deleteMany?: InviteScalarWhereInput | InviteScalarWhereInput[]
+  }
+
   export type GameUncheckedUpdateManyWithoutWinnerNestedInput = {
     create?: XOR<GameCreateWithoutWinnerInput, GameUncheckedCreateWithoutWinnerInput> | GameCreateWithoutWinnerInput[] | GameUncheckedCreateWithoutWinnerInput[]
     connectOrCreate?: GameCreateOrConnectWithoutWinnerInput | GameCreateOrConnectWithoutWinnerInput[]
@@ -5910,6 +7523,34 @@ export namespace Prisma {
     deleteMany?: MathQuestionScalarWhereInput | MathQuestionScalarWhereInput[]
   }
 
+  export type InviteUncheckedUpdateManyWithoutToNestedInput = {
+    create?: XOR<InviteCreateWithoutToInput, InviteUncheckedCreateWithoutToInput> | InviteCreateWithoutToInput[] | InviteUncheckedCreateWithoutToInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutToInput | InviteCreateOrConnectWithoutToInput[]
+    upsert?: InviteUpsertWithWhereUniqueWithoutToInput | InviteUpsertWithWhereUniqueWithoutToInput[]
+    createMany?: InviteCreateManyToInputEnvelope
+    set?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    disconnect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    delete?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    update?: InviteUpdateWithWhereUniqueWithoutToInput | InviteUpdateWithWhereUniqueWithoutToInput[]
+    updateMany?: InviteUpdateManyWithWhereWithoutToInput | InviteUpdateManyWithWhereWithoutToInput[]
+    deleteMany?: InviteScalarWhereInput | InviteScalarWhereInput[]
+  }
+
+  export type InviteUncheckedUpdateManyWithoutFromNestedInput = {
+    create?: XOR<InviteCreateWithoutFromInput, InviteUncheckedCreateWithoutFromInput> | InviteCreateWithoutFromInput[] | InviteUncheckedCreateWithoutFromInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutFromInput | InviteCreateOrConnectWithoutFromInput[]
+    upsert?: InviteUpsertWithWhereUniqueWithoutFromInput | InviteUpsertWithWhereUniqueWithoutFromInput[]
+    createMany?: InviteCreateManyFromInputEnvelope
+    set?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    disconnect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    delete?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    update?: InviteUpdateWithWhereUniqueWithoutFromInput | InviteUpdateWithWhereUniqueWithoutFromInput[]
+    updateMany?: InviteUpdateManyWithWhereWithoutFromInput | InviteUpdateManyWithWhereWithoutFromInput[]
+    deleteMany?: InviteScalarWhereInput | InviteScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutGamesAsPlayer1Input = {
     create?: XOR<UserCreateWithoutGamesAsPlayer1Input, UserUncheckedCreateWithoutGamesAsPlayer1Input>
     connectOrCreate?: UserCreateOrConnectWithoutGamesAsPlayer1Input
@@ -5935,11 +7576,25 @@ export namespace Prisma {
     connect?: MathQuestionWhereUniqueInput | MathQuestionWhereUniqueInput[]
   }
 
+  export type InviteCreateNestedManyWithoutGameInput = {
+    create?: XOR<InviteCreateWithoutGameInput, InviteUncheckedCreateWithoutGameInput> | InviteCreateWithoutGameInput[] | InviteUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutGameInput | InviteCreateOrConnectWithoutGameInput[]
+    createMany?: InviteCreateManyGameInputEnvelope
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+  }
+
   export type MathQuestionUncheckedCreateNestedManyWithoutGameInput = {
     create?: XOR<MathQuestionCreateWithoutGameInput, MathQuestionUncheckedCreateWithoutGameInput> | MathQuestionCreateWithoutGameInput[] | MathQuestionUncheckedCreateWithoutGameInput[]
     connectOrCreate?: MathQuestionCreateOrConnectWithoutGameInput | MathQuestionCreateOrConnectWithoutGameInput[]
     createMany?: MathQuestionCreateManyGameInputEnvelope
     connect?: MathQuestionWhereUniqueInput | MathQuestionWhereUniqueInput[]
+  }
+
+  export type InviteUncheckedCreateNestedManyWithoutGameInput = {
+    create?: XOR<InviteCreateWithoutGameInput, InviteUncheckedCreateWithoutGameInput> | InviteCreateWithoutGameInput[] | InviteUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutGameInput | InviteCreateOrConnectWithoutGameInput[]
+    createMany?: InviteCreateManyGameInputEnvelope
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -5948,6 +7603,10 @@ export namespace Prisma {
 
   export type EnumGameStatusFieldUpdateOperationsInput = {
     set?: $Enums.GameStatus
+  }
+
+  export type EnumMathQuestionTypeFieldUpdateOperationsInput = {
+    set?: $Enums.MathQuestionType
   }
 
   export type UserUpdateOneRequiredWithoutGamesAsPlayer1NestedInput = {
@@ -5990,6 +7649,20 @@ export namespace Prisma {
     deleteMany?: MathQuestionScalarWhereInput | MathQuestionScalarWhereInput[]
   }
 
+  export type InviteUpdateManyWithoutGameNestedInput = {
+    create?: XOR<InviteCreateWithoutGameInput, InviteUncheckedCreateWithoutGameInput> | InviteCreateWithoutGameInput[] | InviteUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutGameInput | InviteCreateOrConnectWithoutGameInput[]
+    upsert?: InviteUpsertWithWhereUniqueWithoutGameInput | InviteUpsertWithWhereUniqueWithoutGameInput[]
+    createMany?: InviteCreateManyGameInputEnvelope
+    set?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    disconnect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    delete?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    update?: InviteUpdateWithWhereUniqueWithoutGameInput | InviteUpdateWithWhereUniqueWithoutGameInput[]
+    updateMany?: InviteUpdateManyWithWhereWithoutGameInput | InviteUpdateManyWithWhereWithoutGameInput[]
+    deleteMany?: InviteScalarWhereInput | InviteScalarWhereInput[]
+  }
+
   export type MathQuestionUncheckedUpdateManyWithoutGameNestedInput = {
     create?: XOR<MathQuestionCreateWithoutGameInput, MathQuestionUncheckedCreateWithoutGameInput> | MathQuestionCreateWithoutGameInput[] | MathQuestionUncheckedCreateWithoutGameInput[]
     connectOrCreate?: MathQuestionCreateOrConnectWithoutGameInput | MathQuestionCreateOrConnectWithoutGameInput[]
@@ -6004,6 +7677,62 @@ export namespace Prisma {
     deleteMany?: MathQuestionScalarWhereInput | MathQuestionScalarWhereInput[]
   }
 
+  export type InviteUncheckedUpdateManyWithoutGameNestedInput = {
+    create?: XOR<InviteCreateWithoutGameInput, InviteUncheckedCreateWithoutGameInput> | InviteCreateWithoutGameInput[] | InviteUncheckedCreateWithoutGameInput[]
+    connectOrCreate?: InviteCreateOrConnectWithoutGameInput | InviteCreateOrConnectWithoutGameInput[]
+    upsert?: InviteUpsertWithWhereUniqueWithoutGameInput | InviteUpsertWithWhereUniqueWithoutGameInput[]
+    createMany?: InviteCreateManyGameInputEnvelope
+    set?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    disconnect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    delete?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    connect?: InviteWhereUniqueInput | InviteWhereUniqueInput[]
+    update?: InviteUpdateWithWhereUniqueWithoutGameInput | InviteUpdateWithWhereUniqueWithoutGameInput[]
+    updateMany?: InviteUpdateManyWithWhereWithoutGameInput | InviteUpdateManyWithWhereWithoutGameInput[]
+    deleteMany?: InviteScalarWhereInput | InviteScalarWhereInput[]
+  }
+
+  export type GameCreateNestedOneWithoutInviteInput = {
+    create?: XOR<GameCreateWithoutInviteInput, GameUncheckedCreateWithoutInviteInput>
+    connectOrCreate?: GameCreateOrConnectWithoutInviteInput
+    connect?: GameWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutInvitesReceivedInput = {
+    create?: XOR<UserCreateWithoutInvitesReceivedInput, UserUncheckedCreateWithoutInvitesReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvitesReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutInvitesSentInput = {
+    create?: XOR<UserCreateWithoutInvitesSentInput, UserUncheckedCreateWithoutInvitesSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvitesSentInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type GameUpdateOneRequiredWithoutInviteNestedInput = {
+    create?: XOR<GameCreateWithoutInviteInput, GameUncheckedCreateWithoutInviteInput>
+    connectOrCreate?: GameCreateOrConnectWithoutInviteInput
+    upsert?: GameUpsertWithoutInviteInput
+    connect?: GameWhereUniqueInput
+    update?: XOR<XOR<GameUpdateToOneWithWhereWithoutInviteInput, GameUpdateWithoutInviteInput>, GameUncheckedUpdateWithoutInviteInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutInvitesReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutInvitesReceivedInput, UserUncheckedCreateWithoutInvitesReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvitesReceivedInput
+    upsert?: UserUpsertWithoutInvitesReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvitesReceivedInput, UserUpdateWithoutInvitesReceivedInput>, UserUncheckedUpdateWithoutInvitesReceivedInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutInvitesSentNestedInput = {
+    create?: XOR<UserCreateWithoutInvitesSentInput, UserUncheckedCreateWithoutInvitesSentInput>
+    connectOrCreate?: UserCreateOrConnectWithoutInvitesSentInput
+    upsert?: UserUpsertWithoutInvitesSentInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutInvitesSentInput, UserUpdateWithoutInvitesSentInput>, UserUncheckedUpdateWithoutInvitesSentInput>
+  }
+
   export type GameCreateNestedOneWithoutQuestionsInput = {
     create?: XOR<GameCreateWithoutQuestionsInput, GameUncheckedCreateWithoutQuestionsInput>
     connectOrCreate?: GameCreateOrConnectWithoutQuestionsInput
@@ -6014,10 +7743,6 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutQuestionsInput, UserUncheckedCreateWithoutQuestionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutQuestionsInput
     connect?: UserWhereUniqueInput
-  }
-
-  export type EnumMathQuestionTypeFieldUpdateOperationsInput = {
-    set?: $Enums.MathQuestionType
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -6034,6 +7759,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type EnumMathQuestionStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MathQuestionStatus
   }
 
   export type GameUpdateOneRequiredWithoutQuestionsNestedInput = {
@@ -6179,6 +7908,13 @@ export namespace Prisma {
     not?: NestedEnumGameStatusFilter<$PrismaModel> | $Enums.GameStatus
   }
 
+  export type NestedEnumMathQuestionTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MathQuestionType | EnumMathQuestionTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMathQuestionTypeFilter<$PrismaModel> | $Enums.MathQuestionType
+  }
+
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -6203,13 +7939,6 @@ export namespace Prisma {
     _max?: NestedEnumGameStatusFilter<$PrismaModel>
   }
 
-  export type NestedEnumMathQuestionTypeFilter<$PrismaModel = never> = {
-    equals?: $Enums.MathQuestionType | EnumMathQuestionTypeFieldRefInput<$PrismaModel>
-    in?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
-    notIn?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
-    not?: NestedEnumMathQuestionTypeFilter<$PrismaModel> | $Enums.MathQuestionType
-  }
-
   export type NestedEnumMathQuestionTypeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.MathQuestionType | EnumMathQuestionTypeFieldRefInput<$PrismaModel>
     in?: $Enums.MathQuestionType[] | ListEnumMathQuestionTypeFieldRefInput<$PrismaModel>
@@ -6218,6 +7947,13 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumMathQuestionTypeFilter<$PrismaModel>
     _max?: NestedEnumMathQuestionTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMathQuestionStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MathQuestionStatus | EnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMathQuestionStatusFilter<$PrismaModel> | $Enums.MathQuestionStatus
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -6274,6 +8010,16 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumMathQuestionStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MathQuestionStatus | EnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MathQuestionStatus[] | ListEnumMathQuestionStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMathQuestionStatusWithAggregatesFilter<$PrismaModel> | $Enums.MathQuestionStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMathQuestionStatusFilter<$PrismaModel>
+    _max?: NestedEnumMathQuestionStatusFilter<$PrismaModel>
+  }
+
   export type GameCreateWithoutWinnerInput = {
     id?: string
     createdAt?: Date | string
@@ -6281,9 +8027,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1: UserCreateNestedOneWithoutGamesAsPlayer1Input
     player2: UserCreateNestedOneWithoutGamesAsPlayer2Input
     questions?: MathQuestionCreateNestedManyWithoutGameInput
+    Invite?: InviteCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateWithoutWinnerInput = {
@@ -6293,9 +8041,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     player2Id: string
     questions?: MathQuestionUncheckedCreateNestedManyWithoutGameInput
+    Invite?: InviteUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameCreateOrConnectWithoutWinnerInput = {
@@ -6315,9 +8065,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player2: UserCreateNestedOneWithoutGamesAsPlayer2Input
     winner?: UserCreateNestedOneWithoutGamesWonInput
     questions?: MathQuestionCreateNestedManyWithoutGameInput
+    Invite?: InviteCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateWithoutPlayer1Input = {
@@ -6327,9 +8079,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player2Id: string
     winnerId?: string | null
     questions?: MathQuestionUncheckedCreateNestedManyWithoutGameInput
+    Invite?: InviteUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameCreateOrConnectWithoutPlayer1Input = {
@@ -6349,9 +8103,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1: UserCreateNestedOneWithoutGamesAsPlayer1Input
     winner?: UserCreateNestedOneWithoutGamesWonInput
     questions?: MathQuestionCreateNestedManyWithoutGameInput
+    Invite?: InviteCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateWithoutPlayer2Input = {
@@ -6361,9 +8117,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     winnerId?: string | null
     questions?: MathQuestionUncheckedCreateNestedManyWithoutGameInput
+    Invite?: InviteUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameCreateOrConnectWithoutPlayer2Input = {
@@ -6383,9 +8141,9 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
+    status?: $Enums.MathQuestionStatus
     game: GameCreateNestedOneWithoutQuestionsInput
   }
 
@@ -6396,10 +8154,10 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
     gameId: string
+    status?: $Enums.MathQuestionStatus
   }
 
   export type MathQuestionCreateOrConnectWithoutPlayerInput = {
@@ -6409,6 +8167,58 @@ export namespace Prisma {
 
   export type MathQuestionCreateManyPlayerInputEnvelope = {
     data: MathQuestionCreateManyPlayerInput | MathQuestionCreateManyPlayerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InviteCreateWithoutToInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    game: GameCreateNestedOneWithoutInviteInput
+    from: UserCreateNestedOneWithoutInvitesSentInput
+  }
+
+  export type InviteUncheckedCreateWithoutToInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gameId: string
+    fromId: string
+  }
+
+  export type InviteCreateOrConnectWithoutToInput = {
+    where: InviteWhereUniqueInput
+    create: XOR<InviteCreateWithoutToInput, InviteUncheckedCreateWithoutToInput>
+  }
+
+  export type InviteCreateManyToInputEnvelope = {
+    data: InviteCreateManyToInput | InviteCreateManyToInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InviteCreateWithoutFromInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    game: GameCreateNestedOneWithoutInviteInput
+    to: UserCreateNestedOneWithoutInvitesReceivedInput
+  }
+
+  export type InviteUncheckedCreateWithoutFromInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gameId: string
+    toId: string
+  }
+
+  export type InviteCreateOrConnectWithoutFromInput = {
+    where: InviteWhereUniqueInput
+    create: XOR<InviteCreateWithoutFromInput, InviteUncheckedCreateWithoutFromInput>
+  }
+
+  export type InviteCreateManyFromInputEnvelope = {
+    data: InviteCreateManyFromInput | InviteCreateManyFromInput[]
     skipDuplicates?: boolean
   }
 
@@ -6438,6 +8248,7 @@ export namespace Prisma {
     startedAt?: DateTimeFilter<"Game"> | Date | string
     finishedAt?: DateTimeNullableFilter<"Game"> | Date | string | null
     status?: EnumGameStatusFilter<"Game"> | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFilter<"Game"> | $Enums.MathQuestionType
     player1Id?: StringFilter<"Game"> | string
     player2Id?: StringFilter<"Game"> | string
     winnerId?: StringNullableFilter<"Game"> | string | null
@@ -6501,11 +8312,55 @@ export namespace Prisma {
     question?: StringFilter<"MathQuestion"> | string
     correctAnswer?: StringFilter<"MathQuestion"> | string
     answer?: StringNullableFilter<"MathQuestion"> | string | null
-    type?: EnumMathQuestionTypeFilter<"MathQuestion"> | $Enums.MathQuestionType
     score?: IntFilter<"MathQuestion"> | number
     responseTimeMs?: IntNullableFilter<"MathQuestion"> | number | null
     gameId?: StringFilter<"MathQuestion"> | string
     playerId?: StringFilter<"MathQuestion"> | string
+    status?: EnumMathQuestionStatusFilter<"MathQuestion"> | $Enums.MathQuestionStatus
+  }
+
+  export type InviteUpsertWithWhereUniqueWithoutToInput = {
+    where: InviteWhereUniqueInput
+    update: XOR<InviteUpdateWithoutToInput, InviteUncheckedUpdateWithoutToInput>
+    create: XOR<InviteCreateWithoutToInput, InviteUncheckedCreateWithoutToInput>
+  }
+
+  export type InviteUpdateWithWhereUniqueWithoutToInput = {
+    where: InviteWhereUniqueInput
+    data: XOR<InviteUpdateWithoutToInput, InviteUncheckedUpdateWithoutToInput>
+  }
+
+  export type InviteUpdateManyWithWhereWithoutToInput = {
+    where: InviteScalarWhereInput
+    data: XOR<InviteUpdateManyMutationInput, InviteUncheckedUpdateManyWithoutToInput>
+  }
+
+  export type InviteScalarWhereInput = {
+    AND?: InviteScalarWhereInput | InviteScalarWhereInput[]
+    OR?: InviteScalarWhereInput[]
+    NOT?: InviteScalarWhereInput | InviteScalarWhereInput[]
+    id?: StringFilter<"Invite"> | string
+    createdAt?: DateTimeFilter<"Invite"> | Date | string
+    updatedAt?: DateTimeFilter<"Invite"> | Date | string
+    gameId?: StringFilter<"Invite"> | string
+    toId?: StringFilter<"Invite"> | string
+    fromId?: StringFilter<"Invite"> | string
+  }
+
+  export type InviteUpsertWithWhereUniqueWithoutFromInput = {
+    where: InviteWhereUniqueInput
+    update: XOR<InviteUpdateWithoutFromInput, InviteUncheckedUpdateWithoutFromInput>
+    create: XOR<InviteCreateWithoutFromInput, InviteUncheckedCreateWithoutFromInput>
+  }
+
+  export type InviteUpdateWithWhereUniqueWithoutFromInput = {
+    where: InviteWhereUniqueInput
+    data: XOR<InviteUpdateWithoutFromInput, InviteUncheckedUpdateWithoutFromInput>
+  }
+
+  export type InviteUpdateManyWithWhereWithoutFromInput = {
+    where: InviteScalarWhereInput
+    data: XOR<InviteUpdateManyMutationInput, InviteUncheckedUpdateManyWithoutFromInput>
   }
 
   export type UserCreateWithoutGamesAsPlayer1Input = {
@@ -6518,6 +8373,8 @@ export namespace Prisma {
     gamesWon?: GameCreateNestedManyWithoutWinnerInput
     gamesAsPlayer2?: GameCreateNestedManyWithoutPlayer2Input
     questions?: MathQuestionCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteCreateNestedManyWithoutToInput
+    invitesSent?: InviteCreateNestedManyWithoutFromInput
   }
 
   export type UserUncheckedCreateWithoutGamesAsPlayer1Input = {
@@ -6530,6 +8387,8 @@ export namespace Prisma {
     gamesWon?: GameUncheckedCreateNestedManyWithoutWinnerInput
     gamesAsPlayer2?: GameUncheckedCreateNestedManyWithoutPlayer2Input
     questions?: MathQuestionUncheckedCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteUncheckedCreateNestedManyWithoutToInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutFromInput
   }
 
   export type UserCreateOrConnectWithoutGamesAsPlayer1Input = {
@@ -6547,6 +8406,8 @@ export namespace Prisma {
     gamesWon?: GameCreateNestedManyWithoutWinnerInput
     gamesAsPlayer1?: GameCreateNestedManyWithoutPlayer1Input
     questions?: MathQuestionCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteCreateNestedManyWithoutToInput
+    invitesSent?: InviteCreateNestedManyWithoutFromInput
   }
 
   export type UserUncheckedCreateWithoutGamesAsPlayer2Input = {
@@ -6559,6 +8420,8 @@ export namespace Prisma {
     gamesWon?: GameUncheckedCreateNestedManyWithoutWinnerInput
     gamesAsPlayer1?: GameUncheckedCreateNestedManyWithoutPlayer1Input
     questions?: MathQuestionUncheckedCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteUncheckedCreateNestedManyWithoutToInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutFromInput
   }
 
   export type UserCreateOrConnectWithoutGamesAsPlayer2Input = {
@@ -6576,6 +8439,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameCreateNestedManyWithoutPlayer1Input
     gamesAsPlayer2?: GameCreateNestedManyWithoutPlayer2Input
     questions?: MathQuestionCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteCreateNestedManyWithoutToInput
+    invitesSent?: InviteCreateNestedManyWithoutFromInput
   }
 
   export type UserUncheckedCreateWithoutGamesWonInput = {
@@ -6588,6 +8453,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameUncheckedCreateNestedManyWithoutPlayer1Input
     gamesAsPlayer2?: GameUncheckedCreateNestedManyWithoutPlayer2Input
     questions?: MathQuestionUncheckedCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteUncheckedCreateNestedManyWithoutToInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutFromInput
   }
 
   export type UserCreateOrConnectWithoutGamesWonInput = {
@@ -6602,9 +8469,9 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
+    status?: $Enums.MathQuestionStatus
     player: UserCreateNestedOneWithoutQuestionsInput
   }
 
@@ -6615,10 +8482,10 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
     playerId: string
+    status?: $Enums.MathQuestionStatus
   }
 
   export type MathQuestionCreateOrConnectWithoutGameInput = {
@@ -6628,6 +8495,32 @@ export namespace Prisma {
 
   export type MathQuestionCreateManyGameInputEnvelope = {
     data: MathQuestionCreateManyGameInput | MathQuestionCreateManyGameInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InviteCreateWithoutGameInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    to: UserCreateNestedOneWithoutInvitesReceivedInput
+    from: UserCreateNestedOneWithoutInvitesSentInput
+  }
+
+  export type InviteUncheckedCreateWithoutGameInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    toId: string
+    fromId: string
+  }
+
+  export type InviteCreateOrConnectWithoutGameInput = {
+    where: InviteWhereUniqueInput
+    create: XOR<InviteCreateWithoutGameInput, InviteUncheckedCreateWithoutGameInput>
+  }
+
+  export type InviteCreateManyGameInputEnvelope = {
+    data: InviteCreateManyGameInput | InviteCreateManyGameInput[]
     skipDuplicates?: boolean
   }
 
@@ -6652,6 +8545,8 @@ export namespace Prisma {
     gamesWon?: GameUpdateManyWithoutWinnerNestedInput
     gamesAsPlayer2?: GameUpdateManyWithoutPlayer2NestedInput
     questions?: MathQuestionUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUpdateManyWithoutFromNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGamesAsPlayer1Input = {
@@ -6664,6 +8559,8 @@ export namespace Prisma {
     gamesWon?: GameUncheckedUpdateManyWithoutWinnerNestedInput
     gamesAsPlayer2?: GameUncheckedUpdateManyWithoutPlayer2NestedInput
     questions?: MathQuestionUncheckedUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUncheckedUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutFromNestedInput
   }
 
   export type UserUpsertWithoutGamesAsPlayer2Input = {
@@ -6687,6 +8584,8 @@ export namespace Prisma {
     gamesWon?: GameUpdateManyWithoutWinnerNestedInput
     gamesAsPlayer1?: GameUpdateManyWithoutPlayer1NestedInput
     questions?: MathQuestionUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUpdateManyWithoutFromNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGamesAsPlayer2Input = {
@@ -6699,6 +8598,8 @@ export namespace Prisma {
     gamesWon?: GameUncheckedUpdateManyWithoutWinnerNestedInput
     gamesAsPlayer1?: GameUncheckedUpdateManyWithoutPlayer1NestedInput
     questions?: MathQuestionUncheckedUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUncheckedUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutFromNestedInput
   }
 
   export type UserUpsertWithoutGamesWonInput = {
@@ -6722,6 +8623,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameUpdateManyWithoutPlayer1NestedInput
     gamesAsPlayer2?: GameUpdateManyWithoutPlayer2NestedInput
     questions?: MathQuestionUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUpdateManyWithoutFromNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGamesWonInput = {
@@ -6734,6 +8637,8 @@ export namespace Prisma {
     gamesAsPlayer1?: GameUncheckedUpdateManyWithoutPlayer1NestedInput
     gamesAsPlayer2?: GameUncheckedUpdateManyWithoutPlayer2NestedInput
     questions?: MathQuestionUncheckedUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUncheckedUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutFromNestedInput
   }
 
   export type MathQuestionUpsertWithWhereUniqueWithoutGameInput = {
@@ -6752,6 +8657,238 @@ export namespace Prisma {
     data: XOR<MathQuestionUpdateManyMutationInput, MathQuestionUncheckedUpdateManyWithoutGameInput>
   }
 
+  export type InviteUpsertWithWhereUniqueWithoutGameInput = {
+    where: InviteWhereUniqueInput
+    update: XOR<InviteUpdateWithoutGameInput, InviteUncheckedUpdateWithoutGameInput>
+    create: XOR<InviteCreateWithoutGameInput, InviteUncheckedCreateWithoutGameInput>
+  }
+
+  export type InviteUpdateWithWhereUniqueWithoutGameInput = {
+    where: InviteWhereUniqueInput
+    data: XOR<InviteUpdateWithoutGameInput, InviteUncheckedUpdateWithoutGameInput>
+  }
+
+  export type InviteUpdateManyWithWhereWithoutGameInput = {
+    where: InviteScalarWhereInput
+    data: XOR<InviteUpdateManyMutationInput, InviteUncheckedUpdateManyWithoutGameInput>
+  }
+
+  export type GameCreateWithoutInviteInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    startedAt: Date | string
+    finishedAt?: Date | string | null
+    status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
+    player1: UserCreateNestedOneWithoutGamesAsPlayer1Input
+    player2: UserCreateNestedOneWithoutGamesAsPlayer2Input
+    winner?: UserCreateNestedOneWithoutGamesWonInput
+    questions?: MathQuestionCreateNestedManyWithoutGameInput
+  }
+
+  export type GameUncheckedCreateWithoutInviteInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    startedAt: Date | string
+    finishedAt?: Date | string | null
+    status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
+    player1Id: string
+    player2Id: string
+    winnerId?: string | null
+    questions?: MathQuestionUncheckedCreateNestedManyWithoutGameInput
+  }
+
+  export type GameCreateOrConnectWithoutInviteInput = {
+    where: GameWhereUniqueInput
+    create: XOR<GameCreateWithoutInviteInput, GameUncheckedCreateWithoutInviteInput>
+  }
+
+  export type UserCreateWithoutInvitesReceivedInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    email: string
+    name?: string | null
+    image?: string | null
+    gamesWon?: GameCreateNestedManyWithoutWinnerInput
+    gamesAsPlayer1?: GameCreateNestedManyWithoutPlayer1Input
+    gamesAsPlayer2?: GameCreateNestedManyWithoutPlayer2Input
+    questions?: MathQuestionCreateNestedManyWithoutPlayerInput
+    invitesSent?: InviteCreateNestedManyWithoutFromInput
+  }
+
+  export type UserUncheckedCreateWithoutInvitesReceivedInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    email: string
+    name?: string | null
+    image?: string | null
+    gamesWon?: GameUncheckedCreateNestedManyWithoutWinnerInput
+    gamesAsPlayer1?: GameUncheckedCreateNestedManyWithoutPlayer1Input
+    gamesAsPlayer2?: GameUncheckedCreateNestedManyWithoutPlayer2Input
+    questions?: MathQuestionUncheckedCreateNestedManyWithoutPlayerInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutFromInput
+  }
+
+  export type UserCreateOrConnectWithoutInvitesReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutInvitesReceivedInput, UserUncheckedCreateWithoutInvitesReceivedInput>
+  }
+
+  export type UserCreateWithoutInvitesSentInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    email: string
+    name?: string | null
+    image?: string | null
+    gamesWon?: GameCreateNestedManyWithoutWinnerInput
+    gamesAsPlayer1?: GameCreateNestedManyWithoutPlayer1Input
+    gamesAsPlayer2?: GameCreateNestedManyWithoutPlayer2Input
+    questions?: MathQuestionCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteCreateNestedManyWithoutToInput
+  }
+
+  export type UserUncheckedCreateWithoutInvitesSentInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    email: string
+    name?: string | null
+    image?: string | null
+    gamesWon?: GameUncheckedCreateNestedManyWithoutWinnerInput
+    gamesAsPlayer1?: GameUncheckedCreateNestedManyWithoutPlayer1Input
+    gamesAsPlayer2?: GameUncheckedCreateNestedManyWithoutPlayer2Input
+    questions?: MathQuestionUncheckedCreateNestedManyWithoutPlayerInput
+    invitesReceived?: InviteUncheckedCreateNestedManyWithoutToInput
+  }
+
+  export type UserCreateOrConnectWithoutInvitesSentInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutInvitesSentInput, UserUncheckedCreateWithoutInvitesSentInput>
+  }
+
+  export type GameUpsertWithoutInviteInput = {
+    update: XOR<GameUpdateWithoutInviteInput, GameUncheckedUpdateWithoutInviteInput>
+    create: XOR<GameCreateWithoutInviteInput, GameUncheckedCreateWithoutInviteInput>
+    where?: GameWhereInput
+  }
+
+  export type GameUpdateToOneWithWhereWithoutInviteInput = {
+    where?: GameWhereInput
+    data: XOR<GameUpdateWithoutInviteInput, GameUncheckedUpdateWithoutInviteInput>
+  }
+
+  export type GameUpdateWithoutInviteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
+    player1?: UserUpdateOneRequiredWithoutGamesAsPlayer1NestedInput
+    player2?: UserUpdateOneRequiredWithoutGamesAsPlayer2NestedInput
+    winner?: UserUpdateOneWithoutGamesWonNestedInput
+    questions?: MathQuestionUpdateManyWithoutGameNestedInput
+  }
+
+  export type GameUncheckedUpdateWithoutInviteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
+    player1Id?: StringFieldUpdateOperationsInput | string
+    player2Id?: StringFieldUpdateOperationsInput | string
+    winnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    questions?: MathQuestionUncheckedUpdateManyWithoutGameNestedInput
+  }
+
+  export type UserUpsertWithoutInvitesReceivedInput = {
+    update: XOR<UserUpdateWithoutInvitesReceivedInput, UserUncheckedUpdateWithoutInvitesReceivedInput>
+    create: XOR<UserCreateWithoutInvitesReceivedInput, UserUncheckedCreateWithoutInvitesReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutInvitesReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutInvitesReceivedInput, UserUncheckedUpdateWithoutInvitesReceivedInput>
+  }
+
+  export type UserUpdateWithoutInvitesReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    gamesWon?: GameUpdateManyWithoutWinnerNestedInput
+    gamesAsPlayer1?: GameUpdateManyWithoutPlayer1NestedInput
+    gamesAsPlayer2?: GameUpdateManyWithoutPlayer2NestedInput
+    questions?: MathQuestionUpdateManyWithoutPlayerNestedInput
+    invitesSent?: InviteUpdateManyWithoutFromNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutInvitesReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    gamesWon?: GameUncheckedUpdateManyWithoutWinnerNestedInput
+    gamesAsPlayer1?: GameUncheckedUpdateManyWithoutPlayer1NestedInput
+    gamesAsPlayer2?: GameUncheckedUpdateManyWithoutPlayer2NestedInput
+    questions?: MathQuestionUncheckedUpdateManyWithoutPlayerNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutFromNestedInput
+  }
+
+  export type UserUpsertWithoutInvitesSentInput = {
+    update: XOR<UserUpdateWithoutInvitesSentInput, UserUncheckedUpdateWithoutInvitesSentInput>
+    create: XOR<UserCreateWithoutInvitesSentInput, UserUncheckedCreateWithoutInvitesSentInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutInvitesSentInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutInvitesSentInput, UserUncheckedUpdateWithoutInvitesSentInput>
+  }
+
+  export type UserUpdateWithoutInvitesSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    gamesWon?: GameUpdateManyWithoutWinnerNestedInput
+    gamesAsPlayer1?: GameUpdateManyWithoutPlayer1NestedInput
+    gamesAsPlayer2?: GameUpdateManyWithoutPlayer2NestedInput
+    questions?: MathQuestionUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUpdateManyWithoutToNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutInvitesSentInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    email?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    gamesWon?: GameUncheckedUpdateManyWithoutWinnerNestedInput
+    gamesAsPlayer1?: GameUncheckedUpdateManyWithoutPlayer1NestedInput
+    gamesAsPlayer2?: GameUncheckedUpdateManyWithoutPlayer2NestedInput
+    questions?: MathQuestionUncheckedUpdateManyWithoutPlayerNestedInput
+    invitesReceived?: InviteUncheckedUpdateManyWithoutToNestedInput
+  }
+
   export type GameCreateWithoutQuestionsInput = {
     id?: string
     createdAt?: Date | string
@@ -6759,9 +8896,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1: UserCreateNestedOneWithoutGamesAsPlayer1Input
     player2: UserCreateNestedOneWithoutGamesAsPlayer2Input
     winner?: UserCreateNestedOneWithoutGamesWonInput
+    Invite?: InviteCreateNestedManyWithoutGameInput
   }
 
   export type GameUncheckedCreateWithoutQuestionsInput = {
@@ -6771,9 +8910,11 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     player2Id: string
     winnerId?: string | null
+    Invite?: InviteUncheckedCreateNestedManyWithoutGameInput
   }
 
   export type GameCreateOrConnectWithoutQuestionsInput = {
@@ -6791,6 +8932,8 @@ export namespace Prisma {
     gamesWon?: GameCreateNestedManyWithoutWinnerInput
     gamesAsPlayer1?: GameCreateNestedManyWithoutPlayer1Input
     gamesAsPlayer2?: GameCreateNestedManyWithoutPlayer2Input
+    invitesReceived?: InviteCreateNestedManyWithoutToInput
+    invitesSent?: InviteCreateNestedManyWithoutFromInput
   }
 
   export type UserUncheckedCreateWithoutQuestionsInput = {
@@ -6803,6 +8946,8 @@ export namespace Prisma {
     gamesWon?: GameUncheckedCreateNestedManyWithoutWinnerInput
     gamesAsPlayer1?: GameUncheckedCreateNestedManyWithoutPlayer1Input
     gamesAsPlayer2?: GameUncheckedCreateNestedManyWithoutPlayer2Input
+    invitesReceived?: InviteUncheckedCreateNestedManyWithoutToInput
+    invitesSent?: InviteUncheckedCreateNestedManyWithoutFromInput
   }
 
   export type UserCreateOrConnectWithoutQuestionsInput = {
@@ -6828,9 +8973,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1?: UserUpdateOneRequiredWithoutGamesAsPlayer1NestedInput
     player2?: UserUpdateOneRequiredWithoutGamesAsPlayer2NestedInput
     winner?: UserUpdateOneWithoutGamesWonNestedInput
+    Invite?: InviteUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateWithoutQuestionsInput = {
@@ -6840,9 +8987,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1Id?: StringFieldUpdateOperationsInput | string
     player2Id?: StringFieldUpdateOperationsInput | string
     winnerId?: NullableStringFieldUpdateOperationsInput | string | null
+    Invite?: InviteUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type UserUpsertWithoutQuestionsInput = {
@@ -6866,6 +9015,8 @@ export namespace Prisma {
     gamesWon?: GameUpdateManyWithoutWinnerNestedInput
     gamesAsPlayer1?: GameUpdateManyWithoutPlayer1NestedInput
     gamesAsPlayer2?: GameUpdateManyWithoutPlayer2NestedInput
+    invitesReceived?: InviteUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUpdateManyWithoutFromNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuestionsInput = {
@@ -6878,6 +9029,8 @@ export namespace Prisma {
     gamesWon?: GameUncheckedUpdateManyWithoutWinnerNestedInput
     gamesAsPlayer1?: GameUncheckedUpdateManyWithoutPlayer1NestedInput
     gamesAsPlayer2?: GameUncheckedUpdateManyWithoutPlayer2NestedInput
+    invitesReceived?: InviteUncheckedUpdateManyWithoutToNestedInput
+    invitesSent?: InviteUncheckedUpdateManyWithoutFromNestedInput
   }
 
   export type GameCreateManyWinnerInput = {
@@ -6887,6 +9040,7 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     player2Id: string
   }
@@ -6898,6 +9052,7 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player2Id: string
     winnerId?: string | null
   }
@@ -6909,6 +9064,7 @@ export namespace Prisma {
     startedAt: Date | string
     finishedAt?: Date | string | null
     status?: $Enums.GameStatus
+    questionsType: $Enums.MathQuestionType
     player1Id: string
     winnerId?: string | null
   }
@@ -6920,10 +9076,26 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
     gameId: string
+    status?: $Enums.MathQuestionStatus
+  }
+
+  export type InviteCreateManyToInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gameId: string
+    fromId: string
+  }
+
+  export type InviteCreateManyFromInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    gameId: string
+    toId: string
   }
 
   export type GameUpdateWithoutWinnerInput = {
@@ -6933,9 +9105,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1?: UserUpdateOneRequiredWithoutGamesAsPlayer1NestedInput
     player2?: UserUpdateOneRequiredWithoutGamesAsPlayer2NestedInput
     questions?: MathQuestionUpdateManyWithoutGameNestedInput
+    Invite?: InviteUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateWithoutWinnerInput = {
@@ -6945,9 +9119,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1Id?: StringFieldUpdateOperationsInput | string
     player2Id?: StringFieldUpdateOperationsInput | string
     questions?: MathQuestionUncheckedUpdateManyWithoutGameNestedInput
+    Invite?: InviteUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateManyWithoutWinnerInput = {
@@ -6957,6 +9133,7 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1Id?: StringFieldUpdateOperationsInput | string
     player2Id?: StringFieldUpdateOperationsInput | string
   }
@@ -6968,9 +9145,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player2?: UserUpdateOneRequiredWithoutGamesAsPlayer2NestedInput
     winner?: UserUpdateOneWithoutGamesWonNestedInput
     questions?: MathQuestionUpdateManyWithoutGameNestedInput
+    Invite?: InviteUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateWithoutPlayer1Input = {
@@ -6980,9 +9159,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player2Id?: StringFieldUpdateOperationsInput | string
     winnerId?: NullableStringFieldUpdateOperationsInput | string | null
     questions?: MathQuestionUncheckedUpdateManyWithoutGameNestedInput
+    Invite?: InviteUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateManyWithoutPlayer1Input = {
@@ -6992,6 +9173,7 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player2Id?: StringFieldUpdateOperationsInput | string
     winnerId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -7003,9 +9185,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1?: UserUpdateOneRequiredWithoutGamesAsPlayer1NestedInput
     winner?: UserUpdateOneWithoutGamesWonNestedInput
     questions?: MathQuestionUpdateManyWithoutGameNestedInput
+    Invite?: InviteUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateWithoutPlayer2Input = {
@@ -7015,9 +9199,11 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1Id?: StringFieldUpdateOperationsInput | string
     winnerId?: NullableStringFieldUpdateOperationsInput | string | null
     questions?: MathQuestionUncheckedUpdateManyWithoutGameNestedInput
+    Invite?: InviteUncheckedUpdateManyWithoutGameNestedInput
   }
 
   export type GameUncheckedUpdateManyWithoutPlayer2Input = {
@@ -7027,6 +9213,7 @@ export namespace Prisma {
     startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     finishedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     status?: EnumGameStatusFieldUpdateOperationsInput | $Enums.GameStatus
+    questionsType?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     player1Id?: StringFieldUpdateOperationsInput | string
     winnerId?: NullableStringFieldUpdateOperationsInput | string | null
   }
@@ -7038,9 +9225,9 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
     game?: GameUpdateOneRequiredWithoutQuestionsNestedInput
   }
 
@@ -7051,10 +9238,10 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
     gameId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
   }
 
   export type MathQuestionUncheckedUpdateManyWithoutPlayerInput = {
@@ -7064,10 +9251,58 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
     gameId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
+  }
+
+  export type InviteUpdateWithoutToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    game?: GameUpdateOneRequiredWithoutInviteNestedInput
+    from?: UserUpdateOneRequiredWithoutInvitesSentNestedInput
+  }
+
+  export type InviteUncheckedUpdateWithoutToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type InviteUncheckedUpdateManyWithoutToInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type InviteUpdateWithoutFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    game?: GameUpdateOneRequiredWithoutInviteNestedInput
+    to?: UserUpdateOneRequiredWithoutInvitesReceivedNestedInput
+  }
+
+  export type InviteUncheckedUpdateWithoutFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type InviteUncheckedUpdateManyWithoutFromInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    gameId?: StringFieldUpdateOperationsInput | string
+    toId?: StringFieldUpdateOperationsInput | string
   }
 
   export type MathQuestionCreateManyGameInput = {
@@ -7077,10 +9312,18 @@ export namespace Prisma {
     question: string
     correctAnswer: string
     answer?: string | null
-    type?: $Enums.MathQuestionType
     score?: number
     responseTimeMs?: number | null
     playerId: string
+    status?: $Enums.MathQuestionStatus
+  }
+
+  export type InviteCreateManyGameInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    toId: string
+    fromId: string
   }
 
   export type MathQuestionUpdateWithoutGameInput = {
@@ -7090,9 +9333,9 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
     player?: UserUpdateOneRequiredWithoutQuestionsNestedInput
   }
 
@@ -7103,10 +9346,10 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
     playerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
   }
 
   export type MathQuestionUncheckedUpdateManyWithoutGameInput = {
@@ -7116,10 +9359,34 @@ export namespace Prisma {
     question?: StringFieldUpdateOperationsInput | string
     correctAnswer?: StringFieldUpdateOperationsInput | string
     answer?: NullableStringFieldUpdateOperationsInput | string | null
-    type?: EnumMathQuestionTypeFieldUpdateOperationsInput | $Enums.MathQuestionType
     score?: IntFieldUpdateOperationsInput | number
     responseTimeMs?: NullableIntFieldUpdateOperationsInput | number | null
     playerId?: StringFieldUpdateOperationsInput | string
+    status?: EnumMathQuestionStatusFieldUpdateOperationsInput | $Enums.MathQuestionStatus
+  }
+
+  export type InviteUpdateWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    to?: UserUpdateOneRequiredWithoutInvitesReceivedNestedInput
+    from?: UserUpdateOneRequiredWithoutInvitesSentNestedInput
+  }
+
+  export type InviteUncheckedUpdateWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    toId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type InviteUncheckedUpdateManyWithoutGameInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    toId?: StringFieldUpdateOperationsInput | string
+    fromId?: StringFieldUpdateOperationsInput | string
   }
 
 

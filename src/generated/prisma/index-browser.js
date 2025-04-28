@@ -133,9 +133,19 @@ exports.Prisma.GameScalarFieldEnum = {
   startedAt: 'startedAt',
   finishedAt: 'finishedAt',
   status: 'status',
+  questionsType: 'questionsType',
   player1Id: 'player1Id',
   player2Id: 'player2Id',
   winnerId: 'winnerId'
+};
+
+exports.Prisma.InviteScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  gameId: 'gameId',
+  toId: 'toId',
+  fromId: 'fromId'
 };
 
 exports.Prisma.MathQuestionScalarFieldEnum = {
@@ -145,11 +155,11 @@ exports.Prisma.MathQuestionScalarFieldEnum = {
   question: 'question',
   correctAnswer: 'correctAnswer',
   answer: 'answer',
-  type: 'type',
   score: 'score',
   responseTimeMs: 'responseTimeMs',
   gameId: 'gameId',
-  playerId: 'playerId'
+  playerId: 'playerId',
+  status: 'status'
 };
 
 exports.Prisma.SortOrder = {
@@ -175,12 +185,18 @@ exports.GameStatus = exports.$Enums.GameStatus = {
 };
 
 exports.MathQuestionType = exports.$Enums.MathQuestionType = {
-  ARITHMETIC: 'ARITHMETIC'
+  ARITHMETICS: 'ARITHMETICS'
+};
+
+exports.MathQuestionStatus = exports.$Enums.MathQuestionStatus = {
+  NOT_ANSWERED: 'NOT_ANSWERED',
+  ANSWERED: 'ANSWERED'
 };
 
 exports.Prisma.ModelName = {
   User: 'User',
   Game: 'Game',
+  Invite: 'Invite',
   MathQuestion: 'MathQuestion'
 };
 
