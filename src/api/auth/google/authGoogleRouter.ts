@@ -41,7 +41,7 @@ authGoogleRouter.get(
       res.cookie("x-auth-token", token, {
         domain: domain,
         httpOnly: true, // Prevent client-side script access
-        secure: false, // WARNING: Set to false for HTTP backend - INSECURE!
+        secure: true, // WARNING: Set to false for HTTP backend - INSECURE!
         sameSite: "lax", // Mitigate CSRF attacks
         path: "/", // Ensure cookie is accessible across the client domain
       });
