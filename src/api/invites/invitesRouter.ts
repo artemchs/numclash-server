@@ -7,7 +7,7 @@ import { z } from "zod";
 import { validateRequest } from "zod-express-middleware";
 import { getUserInvites } from "./services/getUserInvites";
 
-export const invitesRouter = Router();
+export const invitesRouter: Router = Router();
 
 invitesRouter.get("/", requireJwtAuth, async (req, res) => {
   const userId = req.user?.id;

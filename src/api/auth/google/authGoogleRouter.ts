@@ -15,7 +15,7 @@ declare global {
   }
 }
 
-export const authGoogleRouter = Router();
+export const authGoogleRouter: Router = Router();
 
 // Change from POST to GET for initiating OAuth flow via browser navigation
 authGoogleRouter.get(

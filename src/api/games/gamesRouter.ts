@@ -16,7 +16,7 @@ import { validateRequest } from "zod-express-middleware";
 
 const MAX_ROUNDS = 3;
 
-const gamesRouter = Router();
+const gamesRouter: Router = Router();
 
 // Define the schema for the request body directly
 const createGameBodySchema = z.object({

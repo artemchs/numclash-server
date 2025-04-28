@@ -2,7 +2,7 @@ import { requireJwtAuth } from "@/common/middleware/requireJwtAuth";
 import { logger } from "@/server";
 import { Router } from "express";
 
-export const usersRouter = Router();
+export const usersRouter: Router = Router();
 
 usersRouter.get("/me", requireJwtAuth, (req, res) => {
   const user = req.user;
