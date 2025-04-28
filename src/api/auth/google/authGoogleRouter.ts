@@ -36,13 +36,11 @@ authGoogleRouter.get(
       const clientUrl = new URL(env.CLIENT_URL);
       const domain = clientUrl.hostname;
 
-      // Set cookie with domain, httpOnly, and sameSite attributes
-      // WARNING: Secure flag is removed for HTTP backend compatibility - INSECURE!
       res.cookie("x-auth-token", token, {
         domain: domain,
         httpOnly: true, // Prevent client-side script access
-        secure: true, // WARNING: Set to false for HTTP backend - INSECURE!
-        sameSite: "lax", // Mitigate CSRF attacks
+        secure: true,
+        sameSite: "none", // Mitigate CSRF attacks
         path: "/", // Ensure cookie is accessible across the client domain
       });
       res.redirect(env.CLIENT_URL);
