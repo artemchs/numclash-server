@@ -1,3 +1,4 @@
+import { URL } from "node:url"; // Import URL
 import { env } from "@/common/utils/envConfig";
 import { generateJwt } from "@/common/utils/generateJwt";
 import { Router } from "express";
@@ -32,7 +33,18 @@ authGoogleRouter.get(
   (req, res) => {
     if (req.user) {
       const token = generateJwt(req.user);
-      res.cookie("x-auth-token", token);
+      const clientUrl = new URL(env.CLIENT_URL);
+      const domain = clientUrl.hostname;
+
+      // Set cookie with domain, httpOnly, and sameSite attributes
+      // WARNING: Secure flag is removed for HTTP backend compatibility - INSECURE!
+      res.cookie("x-auth-token", token, {
+        domain: domain,
+        httpOnly: true, // Prevent client-side script access
+        secure: false, // WARNING: Set to false for HTTP backend - INSECURE!
+        sameSite: "lax", // Mitigate CSRF attacks
+        path: "/", // Ensure cookie is accessible across the client domain
+      });
       res.redirect(env.CLIENT_URL);
     } else {
       res.redirect(`${env.CLIENT_URL}/login`);
