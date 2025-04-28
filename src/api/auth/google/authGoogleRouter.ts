@@ -37,7 +37,6 @@ authGoogleRouter.get(
       const domain = clientUrl.hostname;
 
       res.cookie("x-auth-token", token, {
-        domain: domain,
         httpOnly: true, // Prevent client-side script access
         secure: true,
         sameSite: "none", // Mitigate CSRF attacks
