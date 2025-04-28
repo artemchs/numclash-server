@@ -1,35 +1,25 @@
-# Base stage with pnpm setup
-FROM node:23.11.0-slim AS base
+FROM node:lts AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-# Production dependencies stage
 FROM base AS prod-deps
-COPY package.json pnpm-lock.yaml ./
-# Install only production dependencies
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile --ignore-scripts
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Build stage - install all dependencies and build
 FROM base AS build
-COPY package.json pnpm-lock.yaml ./
-# Install all dependencies (including dev dependencies)
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --ignore-scripts
-COPY . .
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm exec prisma generate
 RUN pnpm run build
 
-# Final stage - combine production dependencies and build output
-FROM node:23.11.0-alpine AS runner
-WORKDIR /app
-COPY --from=prod-deps --chown=node:node /app/node_modules ./node_modules
-COPY --from=build --chown=node:node /app/dist ./dist
+FROM base AS prod
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+COPY --from=build /app/prisma /app/prisma
+RUN pnpm add -g prisma
 
-# Use the node user from the image
-USER node
+ENV PORT=3002
+ENV NODE_ENV=production
 
-# Expose port 3000
-EXPOSE 3000
-
-# Start the server
-CMD ["node", "dist/index.js"]
+CMD [ "pnpm", "start:migrate:prod" ]
