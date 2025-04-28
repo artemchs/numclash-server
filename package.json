@@ -8,7 +8,7 @@
     "build": "tsc && tsup",
     "start:dev": "./start-database.sh && node --import=tsx --watch src/index.ts",
     "start:prod": "node dist/index.js",
-    "start:migrate:prod": "prisma generate && prisma migrate deploy && pnpm start:prod",
+    "start:migrate:prod": "pnpm exec prisma migrate deploy && pnpm start:prod",
     "lint": "biome lint --fix",
     "format": "biome format --write",
     "check": "pnpm lint && pnpm format && pnpm build && pnpm test"
